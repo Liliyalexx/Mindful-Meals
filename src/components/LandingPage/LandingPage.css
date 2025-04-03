@@ -1,0 +1,25 @@
+body{
+    background-color: black;
+}
+.knife-container img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .auth-container {
+    background-color: #040404;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  .welcome-container {
+    margin-top: 20px;
+  }
+  
+  .text-golden {
+    color: #FFD700; /* Replace with your golden color */
+  }
+  .button{
+    width: 70%;
+  }

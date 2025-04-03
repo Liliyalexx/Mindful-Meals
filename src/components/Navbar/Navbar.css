@@ -1,0 +1,143 @@
+:root {
+    --color-black: #0c0c0c;
+    --color-golden: #dcca87;
+    --color-white: #fff;
+}
+
+.app__navbar {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-black);
+    padding: 1rem 2rem;
+}
+
+.app__navbar-logo img {
+    width: 180px;
+    margin-left: 40px;
+}
+
+.app__navbar-links {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+}
+
+.app__navbar-links li {
+    margin: 0 1rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.app__navbar-links li a {
+    color: var(--color-white);
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.app__navbar-links li:hover {
+    background-color: var(--color-golden);
+}
+
+.app__navbar-login {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.app__navbar-login a {
+    color: var(--color-white);
+    margin: 0 1rem;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+.app__navbar-login a:hover {
+    color: var(--color-golden);
+}
+
+.divider {
+    width: 1px;
+    height: 30px;
+    background-color: var(--color-golden);
+}
+
+.app__navbar-smallscreen {
+    display: none;
+}
+
+.menu-icon {
+    color: var(--color-white);
+    font-size: 27px;
+    cursor: pointer;
+}
+
+.app__navbar-smallscreen_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--color-black);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s ease-in-out;
+    z-index: 5;
+}
+
+.overlay__close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 30px;
+    color: var(--color-golden);
+    cursor: pointer;
+}
+
+.app__navbar-smallscreen_links {
+    list-style: none;
+    text-align: center;
+}
+
+.app__navbar-smallscreen_links li {
+    margin: 1rem 0;
+    font-size: 1.5rem;
+    color: var(--color-golden);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.app__navbar-smallscreen_links li:hover {
+    color: var(--color-white);
+}
+
+@media screen and (max-width: 1150px) {
+    .app__navbar-links {
+        display: none;
+    }
+
+    .app__navbar-smallscreen {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .app__navbar {
+        padding: 1rem;
+    }
+
+    .app__navbar-login {
+        display: none;
+    }
+
+    .app__navbar-logo img {
+        width: 120px;
+    }
+}
