@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://Liliyalexx.github.io/Mindful-Meals",
+  "homepage": "https://liliyalexx.github.io/Mindful-Meals",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
