@@ -2,25 +2,19 @@ import React, { useState } from 'react';
 import images from '../../constants/images';
 import './Header.css';
 import { SubHeading } from '../../components';
+import { searchYelp } from '../../api/yelpApi';
 
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [location, setLocation] = useState('');
+  const [category, setCategory] = useState('gluten_free');
+  const [results, setResults] = useState([]);
 
   const handleSearch = async () => {
     try {
-      // Replace with your actual Yelp API call
-      const response = await fetch(
-        `https://api.yelp.com/v3/businesses/search?term=${searchTerm}&location=${location}`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_YELP_API_KEY}`,
-          },
-        }
-      );
-      const data = await response.json();
-      console.log('Yelp API results:', data.businesses);
-      // Handle the results (e.g., pass to parent component or update state)
+      const results = await searchYelp(`${searchTerm} ${category}`, location);
+      console.log('Yelp results:', results);
+      setResults(results);
     } catch (error) {
       console.error('Yelp API error:', error);
     }
@@ -50,6 +44,18 @@ const Header = () => {
             onChange={(e) => setLocation(e.target.value)}
             className="app__search-input"
           />
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="app__search-input"
+          >
+            <option value="gluten_free">Gluten Free</option>
+            <option value="vegan">Vegan</option>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="halal">Halal</option>
+            <option value="kosher">Kosher</option>
+            <option value="allergy friendly">Allergy Friendly</option>
+          </select>
           <button
             type="button"
             onClick={handleSearch}
