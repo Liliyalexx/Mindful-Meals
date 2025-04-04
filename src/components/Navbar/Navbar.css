@@ -6,7 +6,7 @@
 
 .app__navbar {
     display: flex;
-    width: 100%;
+    width: 95.7%;
     justify-content: space-between;
     align-items: center;
     background-color: var(--color-black);
