@@ -55,6 +55,7 @@
     margin: 0 1rem;
     text-decoration: none;
     transition: 0.3s ease;
+  
 }
 
 .app__navbar-login a:hover {
@@ -140,4 +141,7 @@
     .app__navbar-logo img {
         width: 120px;
     }
+}
+.book{
+    margin-left: 100px;
 }

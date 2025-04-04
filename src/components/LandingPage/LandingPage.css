@@ -1,25 +1,42 @@
-body{
+.landing-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     background-color: black;
-}
-.knife-container img {
-    max-width: 100%;
-    height: auto;
-  }
-  
-  .auth-container {
-    background-color: #040404;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
   }
   
-  .welcome-container {
-    margin-top: 20px;
+  .signup-container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 350px;
+  }
+  
+  .image-container img {
+    max-width: 50%;
+    height: auto;
   }
   
   .text-golden {
-    color: #FFD700; /* Replace with your golden color */
+    color: #FFD700;
   }
-  .button{
-    width: 70%;
+  
+  @media (max-width: 768px) {
+    .landing-page {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .signup-container {
+      width: 100%;
+      max-width: 400px;
+    }
+  
+    .image-container {
+      margin-top: 20px;
+    }
   }
+  
