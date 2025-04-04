@@ -10,6 +10,9 @@
   --color-grey: #AAAAAA;
   --color-white: #FFFFFF;
 }
+body{
+  background-color: black;
+}
 
 * {
   box-sizing: border-box;
