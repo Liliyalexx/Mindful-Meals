@@ -1,8 +1,7 @@
-const images = {
-    logo: "/assets/logo.png",
-    facebookIcon: "/assets/facebook.png",
-    instagramIcon: "/assets/instagram.png",
-    linkedinIcon: "/assets/linkedin.png",
-  };
+import mindfulmeals from '../assets/mindful_meals.png';
+import findus from '../assets/findus.png';
   
-  export default images;
+  export default {
+    mindfulmeals,
+    findus
+  }

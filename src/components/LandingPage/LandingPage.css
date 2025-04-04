@@ -1,13 +1,11 @@
 .landing-page {
     display: flex;
-    justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 10px;
     width: 100%;
     display: flex;
     width: 100%;
-    justify-content: space-between;
     align-items: center;
     background-color: var(--color-black);
     padding: 1rem 2rem;
@@ -17,11 +15,15 @@
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 50px;
     width: 350px;
+    margin-bottom: 2rem;
+    
+    margin: 100px;
   }
   
   .image-container img {
+    flex-direction: column;
     max-width: 50%;
     height: auto;
   }
