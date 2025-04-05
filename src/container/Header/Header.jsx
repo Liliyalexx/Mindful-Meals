@@ -4,19 +4,22 @@ import './Header.css';
 import { SubHeading } from '../../components';
 import { searchYelp } from '../../api/yelpApi';
 
-const Header = () => {
+const Header = ({ handleSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [location, setLocation] = useState('');
   const [category, setCategory] = useState('gluten_free');
-  const [results, setResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
-  const handleSearch = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSearching(true);
     try {
-      const results = await searchYelp(`${searchTerm} ${category}`, location);
-      console.log('Yelp results:', results);
-      setResults(results);
+      const searchResults = await searchYelp(`${searchTerm} ${category}`, location);
+      handleSearch(searchResults);
     } catch (error) {
       console.error('Yelp API error:', error);
+    } finally {
+      setIsSearching(false);
     }
   };
 
@@ -29,13 +32,14 @@ const Header = () => {
           Sit tellus lobortis sed senectus vivamus molestie. Condimentum volutpat morbi facilisis quam scelerisque sapien.
         </p>
 
-        <div className="app__search-container">
+        <form onSubmit={handleSubmit} className="app__search-container">
           <input
             type="text"
             placeholder="Search for restaurants..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="app__search-input"
+            required
           />
           <input
             type="text"
@@ -43,6 +47,7 @@ const Header = () => {
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             className="app__search-input"
+            required
           />
           <select
             value={category}
@@ -57,13 +62,13 @@ const Header = () => {
             <option value="allergy friendly">Allergy Friendly</option>
           </select>
           <button
-            type="button"
-            onClick={handleSearch}
+            type="submit"
             className="custom__button"
+            disabled={isSearching}
           >
-            Search Yelp
+            {isSearching ? 'Searching...' : 'Search Yelp'}
           </button>
-        </div>
+        </form>
       </div>
 
       <div className='app__wrapper_img'>

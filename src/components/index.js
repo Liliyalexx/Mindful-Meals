@@ -1,10 +1,11 @@
 // src/components/index.js
 import Navbar from './Navbar/Navbar';
 import SubHeading from './SubHeading/SubHeading';
-//import RestaurantList from './RestaurantList/RestaurantList';
+import YelpSearchResult from './YelpSearchResult/YelpSearchResult'; 
+
 
 export {
   Navbar,
   SubHeading,
-  //RestaurantList
+  YelpSearchResult
 };

@@ -181,3 +181,25 @@
     line-height: 70px;
   }
 }
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-black);
+}
+
+.app__content {
+  flex: 1;
+  padding-top: 80px; /* Adjust based on your navbar height */
+}
+
+/* Add these variables if not already present */
+:root {
+  --color-black: #0C0C0C;
+  --color-golden: #DCCA87;
+  --color-crimson: #F5EFDB;
+  --color-grey: #AAAAAA;
+  --color-white: #FFFFFF;
+  --font-base: 'Cormorant Upright', serif;
+  --font-alt: 'Open Sans', sans-serif;
+}
