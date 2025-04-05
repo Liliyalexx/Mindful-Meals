@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Header } from './container';
 import { Navbar } from './components';
 import { YelpSearchResult } from './components';
+import { SearchBar } from './components';
 import './App.css';
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
       <div className="app__content">
         <Header handleSearch={handleSearch} />  
         {restaurants.length > 0 && <YelpSearchResult results={restaurants} />}
+        <SearchBar/>
       </div>
     </div>
   );

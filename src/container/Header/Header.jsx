@@ -15,6 +15,7 @@ const Header = ({ handleSearch }) => {
     setIsSearching(true);
     try {
       const searchResults = await searchYelp(`${searchTerm} ${category}`, location);
+      console.log('Yelp searchResults:', searchResults);
       handleSearch(searchResults);
     } catch (error) {
       console.error('Yelp API error:', error);

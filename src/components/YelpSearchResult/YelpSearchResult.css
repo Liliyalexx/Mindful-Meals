@@ -2,6 +2,7 @@
   padding: 2rem;
   background-color: var(--color-black);
   color: var(--color-white);
+  display: none;
 }
 
 .results-title {
