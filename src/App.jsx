@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import {LandingPage} from './components';
 import { Header } from './container';
 import { Navbar, YelpSearchResult } from './components';
 import images from './constants/images';
@@ -11,11 +13,13 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('gluten_free'); 
+  const [location, setLocation] = useState('');
 
   const handleSearch = async (searchTerm, location, category) => {
     setIsLoading(true);
     setError(null);
     setSelectedCategory(category); 
+    setLocation(location);
     try {
       const results = await searchYelp(searchTerm, location, category);
       setRestaurants(results);
@@ -29,13 +33,15 @@ const App = () => {
   };
 
   return (
-    <div className="app">
+    <div className="app min-h-screen flex flex-col">
       <Navbar />
       <div className="app__content">
         <Header 
           handleSearch={handleSearch} 
           hasResults={hasSearched} 
           isLoading={isLoading}
+          location={location}
+          restaurants={restaurants}
         />
         
         {error && (

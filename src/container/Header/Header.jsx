@@ -1,10 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef  } from 'react';
 import images from '../../constants/images';
 import './Header.css';
 import { SubHeading } from '../../components';
 import { searchYelp } from '../../api/yelpApi';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+const Header = ({ handleSearch, hasResults, isLoading, restaurants }) => {
+  const mapRef = useRef(null);
+  useEffect(() => {
+    if (!mapRef.current || !restaurants?.length) return;
 
-const Header = ({ handleSearch, hasResults }) => {
+    const map = L.map(mapRef.current).setView(
+      [restaurants[0].coordinates.latitude, restaurants[0].coordinates.longitude], 
+      13
+    );
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    restaurants.forEach(biz => {
+      L.marker([biz.coordinates.latitude, biz.coordinates.longitude])
+        .bindPopup(`<b>${biz.name}</b><br>Rating: ${biz.rating} ★`)
+        .addTo(map);
+    });
+
+    return () => map.remove();
+  }, [restaurants]);
+
+
+
   const [searchTerm, setSearchTerm] = useState('');
   const [location, setLocation] = useState('');
   const [category, setCategory] = useState('gluten_free');
@@ -83,12 +108,9 @@ const Header = ({ handleSearch, hasResults }) => {
         </form>
       </div>
 
-      {/* Only show welcome image when no search results yet */}
-      {!hasResults && (
-        <div className='app__wrapper_img'>
-          <img src={images.welcome} alt="header img" />
-        </div>
-      )}
+      <div className="app__wrapper_img">
+      <div className = 'map' ref={mapRef} style={{ height: '500px', width: '700px', borderRadius: '8px', borderColor: 'gold' }} />
+      </div>
     </div>
   );
 };
