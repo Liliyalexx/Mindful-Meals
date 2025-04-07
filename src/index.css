@@ -1,68 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap');
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --font-base: 'Cormorant Upright', serif;
+  --font-alt: 'Open Sans', sans-serif;
+  --color-golden: #DCCA87;
+  --color-black: #0C0C0C;
+  --color-gray: #545454;
+  --color-crimson: #F5EFDB;
+  --color-grey: #AAAAAA;
+  --color-white: #FFFFFF;
+}
+body{
+  background-color: black;
+}
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  scroll-behavior: smooth;
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+  color: unset;
+  text-decoration: none;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+.slide-bottom {
+  -webkit-animation: slide-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	animation: slide-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+@-webkit-keyframes slide-bottom {
+  0% {
+    -webkit-transform: translateY(-25%);
+            transform: translateY(-25%);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+@keyframes slide-bottom {
+  0% {
+    -webkit-transform: translateY(-25%);
+            transform: translateY(-25%);
+  }
+  100% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
 }
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@media (prefers-color-scheme: light) {
+@layer base {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    --background: 60 30% 98%;
+    --foreground: 142 12% 20%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 142 12% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 142 12% 20%;
+
+    --primary: 142 46% 35%;
+    --primary-foreground: 120 20% 98%;
+
+    --secondary: 60 30% 94%;
+    --secondary-foreground: 142 12% 20%;
+
+    --muted: 60 10% 92%;
+    --muted-foreground: 142 8% 40%;
+
+    --accent: 25 95% 90%;
+    --accent-foreground: 25 90% 25%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 142 10% 88%;
+    --input: 142 10% 88%;
+    --ring: 142 40% 50%;
+
+    --radius: 0.5rem;
   }
-  a:hover {
-    color: #747bff;
+
+  .dark {
+    --background: 142 10% 10%;
+    --foreground: 142 10% 90%;
+
+    --card: 142 10% 15%;
+    --card-foreground: 142 10% 90%;
+
+    --popover: 142 10% 15%;
+    --popover-foreground: 142 10% 90%;
+
+    --primary: 142 50% 40%;
+    --primary-foreground: 142 10% 98%;
+
+    --secondary: 142 10% 20%;
+    --secondary-foreground: 142 10% 90%;
+
+    --muted: 142 10% 20%;
+    --muted-foreground: 142 10% 60%;
+
+    --accent: 25 90% 40%;
+    --accent-foreground: 25 90% 90%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 142 10% 90%;
+
+    --border: 142 10% 25%;
+    --input: 142 10% 25%;
+    --ring: 142 50% 40%;
   }
-  button {
-    background-color: #f9f9f9;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .animate-gradient-x {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
 }

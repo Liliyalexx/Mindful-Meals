@@ -1,0 +1,143 @@
+.app__header {
+    background-color: var(--color-black);
+}
+
+.app__header-h1 {
+    font-family: var(--font-base);
+    color: var(--color-golden);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 117px;
+    font-size: 90px;
+}
+/* Add these to your existing Header.css */
+.app__search-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 500px;
+    margin: 2rem 0;
+  }
+  
+  .app__search-input {
+    background-color: var(--color-crimson);
+    color: var(--color-black);
+    font-family: var(--font-base);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 28px;
+    font-size: 16px;
+    padding: 0.5rem 1.5rem;
+    border-radius: 1px;
+    border: none;
+    outline: none;
+    width: 100%;
+    transition: 0.3s ease;
+  }
+  
+  .app__search-input::placeholder {
+    color: var(--color-grey);
+    opacity: 0.7;
+    text-transform: capitalize;
+  }
+  
+  .app__search-input:focus {
+    background-color: var(--color-golden);
+    color: var(--color-white);
+  }
+  
+  .app__search-button {
+    background-color: var(--color-crimson);
+    color: var(--color-black);
+    font-family: var(--font-base);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 28px;
+    font-size: 16px;
+    padding: 0.5rem 1.5rem;
+    border-radius: 1px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    width: 100%;
+    text-transform: uppercase;
+  }
+  
+  .app__search-button:hover {
+    background-color: var(--color-golden);
+    color: var(--color-white);
+  }
+  
+  /* Responsive adjustments */
+  @media screen and (min-width: 768px) {
+    .app__search-container {
+      flex-direction: row;
+    }
+    
+    .app__search-input {
+      width: 70%;
+    }
+    
+    .app__search-button {
+      width: 30%;
+    }
+  }
+  
+  @media screen and (min-width: 2000px) {
+    .app__search-input,
+    .app__search-button {
+      font-size: 37px;
+      line-height: 67px;
+      padding: 1rem 2rem;
+    }
+  }
+  
+  @media screen and (max-width: 650px) {
+    .app__search-input,
+    .app__search-button {
+      font-size: 14px;
+      line-height: 24px;
+    }
+  }
+  
+  @media screen and (max-width: 450px) {
+    .app__search-input,
+    .app__search-button {
+      font-size: 12px;
+      line-height: 20px;
+    }
+  }
+
+  .custom__button {
+    background-color: #d32323;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .custom__button:hover {
+    background-color: #b21f1f;
+  }
+  
+  .custom__button:disabled {
+    background-color: #e87c7c;
+    cursor: not-allowed;
+  }
+  
+  .yelp-logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+  }
+  
