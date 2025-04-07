@@ -4,19 +4,26 @@ import './Header.css';
 import { SubHeading } from '../../components';
 import { searchYelp } from '../../api/yelpApi';
 
-const Header = ({ handleSearch }) => {
+const Header = ({ handleSearch, hasResults }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [location, setLocation] = useState('');
   const [category, setCategory] = useState('gluten_free');
   const [isSearching, setIsSearching] = useState(false);
 
+
+  const dietaryOptions = [
+    { value: 'gluten_free', label: 'Gluten Free' },
+    { value: 'vegan', label: 'Vegan' },
+    { value: 'vegetarian', label: 'Vegetarian' },
+    { value: 'halal', label: 'Halal' },
+    { value: 'kosher', label: 'Kosher' },
+    { value: 'allergy_friendly', label: 'Allergy Friendly' }
+  ];
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSearching(true);
     try {
-      const searchResults = await searchYelp(`${searchTerm} ${category}`, location);
-      console.log('Yelp searchResults:', searchResults);
-      handleSearch(searchResults);
+      await handleSearch(searchTerm, location, category); // Pass the parameters
     } catch (error) {
       console.error('Yelp API error:', error);
     } finally {
@@ -55,26 +62,33 @@ const Header = ({ handleSearch }) => {
             onChange={(e) => setCategory(e.target.value)}
             className="app__search-input"
           >
-            <option value="gluten_free">Gluten Free</option>
-            <option value="vegan">Vegan</option>
-            <option value="vegetarian">Vegetarian</option>
-            <option value="halal">Halal</option>
-            <option value="kosher">Kosher</option>
-            <option value="allergy friendly">Allergy Friendly</option>
-          </select>
+            {dietaryOptions.map(option => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </select>
           <button
             type="submit"
             className="custom__button"
             disabled={isSearching}
           >
+            <img
+          src={images.yelpSearch}
+          alt="Yelp Logo"
+          className="yelp-logo"
+        />
             {isSearching ? 'Searching...' : 'Search Yelp'}
           </button>
         </form>
       </div>
 
-      <div className='app__wrapper_img'>
-        <img src={images.welcome} alt="header img" />
-      </div>
+      {/* Only show welcome image when no search results yet */}
+      {!hasResults && (
+        <div className='app__wrapper_img'>
+          <img src={images.welcome} alt="header img" />
+        </div>
+      )}
     </div>
   );
 };

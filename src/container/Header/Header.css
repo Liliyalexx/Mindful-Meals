@@ -109,3 +109,35 @@
       line-height: 20px;
     }
   }
+
+  .custom__button {
+    background-color: #d32323;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .custom__button:hover {
+    background-color: #b21f1f;
+  }
+  
+  .custom__button:disabled {
+    background-color: #e87c7c;
+    cursor: not-allowed;
+  }
+  
+  .yelp-logo {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+  }
+  
