@@ -40,9 +40,9 @@
 
 .app__navbar-login {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
-}
+  }
+  
 
 .app__navbar-login a {
     margin: 0 1rem;
@@ -133,3 +133,63 @@
         width: 110px;
     }
 } 
+.navbar-auth-group {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Button Styles */
+  .navbar-auth-button {
+    color: var(--color-white);
+    font-family: var(--font-base);
+    font-size: 16px;
+    line-height: 28px;
+    letter-spacing: 0.04em;
+    text-transform: capitalize;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    margin: 0 5px; /* 5px space between buttons and divider */
+    border-radius: 4px;
+  }
+  
+  .navbar-auth-button:hover {
+    color: var(--color-white);
+    background-color: var(--color-golden);
+  }
+  
+  /* Divider Style */
+  .navbar-auth-divider {
+    width: 1px;
+    height: 20px;
+    background-color: var(--color-grey);
+    margin: 0 5px; /* 5px space on both sides of divider */
+  }
+  
+  /* Book Table link specific style */
+  .navbar-auth-button[href] {
+    text-decoration: none;
+  }
+  
+  /* Responsive Adjustments */
+  @media screen and (max-width: 1150px) {
+    .navbar-auth-button {
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+  }
+  
+  @media screen and (max-width: 650px) {
+    .navbar-auth-button {
+      padding: 4px 8px;
+      font-size: 12px;
+      margin: 0 3px;
+    }
+    
+    .navbar-auth-divider {
+      height: 15px;
+      margin: 0 3px;
+    }
+  }
