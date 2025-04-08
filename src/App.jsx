@@ -3,11 +3,12 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar.jsx';
 import LandingPage from './components/LandingPage/LandingPage.jsx';
 import SignIn from './components/SignIn/SignIn.jsx';
-import SignUp from './components/SignUp/SignUp.jsx'; 
+import SignUp from './components/SignUp/SignUp.jsx';
 import YelpSearchResult from './components/YelpSearchResult/YelpSearchResult.jsx';
 import Header from './components/Header/Header.jsx';
 import { searchYelp } from './api/yelpApi';
 import { UserContext, UserProvider } from './context/userContext.jsx';
+import About from './components/About/About';
 import './App.css';
 
 const AppContent = () => {
@@ -48,13 +49,13 @@ const AppContent = () => {
       {error && <div className="app__error"><p>{error}</p></div>}
       {isLoading && <div className="app__loading"><p>Loading restaurants...</p></div>}
 
-{!isLoading && hasSearched && (
-  restaurants.length > 0 ? (
-    <YelpSearchResult results={restaurants} dietaryPreference={selectedCategory} />
-  ) : (
-    <div className="app__no-results"><p>No restaurants found matching your criteria.</p></div>
-  )
-)}
+      {!isLoading && hasSearched && (
+        restaurants.length > 0 ? (
+          <YelpSearchResult results={restaurants} dietaryPreference={selectedCategory} />
+        ) : (
+          <div className="app__no-results"><p>No restaurants found matching your criteria.</p></div>
+        )
+      )}
 
     </div>
   );
@@ -63,12 +64,23 @@ const AppContent = () => {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={user ? <HomeContent /> : <Navigate to="/sign-in"  />} />
-        <Route path="/landing" element={<LandingPage />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route path="*" element={<Navigate to="/" />} /> 
-      </Routes>
+        <Route path="/" element={user ? <HomeContent /> : <Navigate to="/sign-in" />} />
+        {user ? (
+          <>
+            {/* Protected routes (available only to signed-in users) */}
+            <Route path='/favorites' element={<Favorites />} />
+          </>
+        ) : (
+          <>
+            <Route path="/landing" element={<LandingPage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/sign-up" element={<SignUp />} />
+            <Route path="*" element={<Navigate to="/" />} />
+
+          </>
+        )};
+       </Routes>
     </>
   );
 };

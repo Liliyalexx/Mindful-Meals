@@ -29,8 +29,8 @@ const Navbar = () => {
 
       <ul className='app__navbar-links'>
         <li className='navbar-link-item'><Link to="/">Home</Link></li>
-        <li className='navbar-link-item'><a href="#about">About</a></li>
-        <li className='navbar-link-item'><a href="#gallery">Gallery</a></li>
+        <li className='navbar-link-item'><Link to='/About'>About</Link></li>
+        <li className='navbar-link-item'><Link to='/Favorites'>Favorites</Link></li>
         <li className='navbar-link-item'><a href="#contact">Contact Us</a></li>
       </ul>
       
