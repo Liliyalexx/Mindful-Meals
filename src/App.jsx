@@ -7,7 +7,6 @@ import SignUp from './components/SignUp/SignUp.jsx';
 import YelpSearchResult from './components/YelpSearchResult/YelpSearchResult.jsx';
 import Header from './components/Header/Header.jsx';
 import { searchYelp } from './api/yelpApi';
-import welcome from './assets/welcome.png';
 import { UserContext, UserProvider } from './context/userContext.jsx';
 import './App.css';
 
@@ -47,20 +46,16 @@ const AppContent = () => {
         restaurants={restaurants}
       />
       {error && <div className="app__error"><p>{error}</p></div>}
-      {isLoading ? (
-        <div className="app__loading"><p>Loading restaurants...</p></div>
-      ) : hasSearched ? (
-        restaurants.length > 0 ? (
-          <YelpSearchResult results={restaurants} dietaryPreference={selectedCategory} />
-        ) : (
-          <div className="app__no-results"><p>No restaurants found matching your criteria.</p></div>
-        )
-      ) : (
-        <div className="app__welcome">
-          <img src={welcome} alt="Welcome" className="app__welcome-img" />
-          <p className="app__welcome-text">Search for gluten-free restaurants to begin</p>
-        </div>
-      )}
+      {isLoading && <div className="app__loading"><p>Loading restaurants...</p></div>}
+
+{!isLoading && hasSearched && (
+  restaurants.length > 0 ? (
+    <YelpSearchResult results={restaurants} dietaryPreference={selectedCategory} />
+  ) : (
+    <div className="app__no-results"><p>No restaurants found matching your criteria.</p></div>
+  )
+)}
+
     </div>
   );
 

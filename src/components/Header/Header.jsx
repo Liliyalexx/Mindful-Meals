@@ -49,7 +49,7 @@ const Header = ({ handleSearch, restaurants }) => {
     e.preventDefault();
     setIsSearching(true);
     try {
-      await handleSearch(searchTerm, location, category); // Pass the parameters
+      await handleSearch(searchTerm, location, category); 
     } catch (error) {
       console.error('Yelp API error:', error);
     } finally {
@@ -105,12 +105,16 @@ const Header = ({ handleSearch, restaurants }) => {
           </button>
         </form>
       </div>
-
-      <div className="app__wrapper_img">
-      <div className = 'map' ref={mapRef} style={{ height: '500px', width: '700px', borderRadius: '8px', borderColor: 'gold' }} />
-      </div>
+        {/* Map below the search form */}
+  <div className='map-container' style={{ marginTop: '3rem' }}>
+    <div className='map' ref={mapRef} style={{ height: '500px', width: '700px', borderRadius: '8px', border: '3px solid gold' }} />
+  </div>
     </div>
   );
 };
 
 export default Header;
+
+
+
+

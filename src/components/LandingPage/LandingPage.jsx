@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './LandingPage.css'; 
-import welcome from '../../assets/welcome.png'
+
 
 const LandingPage = () => {
   return (

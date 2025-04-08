@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { fetchReviews } from '../../api/yelpApi';
 import './YelpSearchResult.css';
-import yelpLogo from '../../assets/yelpSearch.png'
 
 const YelpSearchResult = ({ results, dietaryPreference }) => {
   const [reviews, setReviews] = useState([]);
@@ -141,6 +140,7 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
           </div>
         )}
       </div>
+      
     </div>
   );
 };
