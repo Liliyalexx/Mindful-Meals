@@ -6,6 +6,7 @@ import SignIn from './components/SignIn/SignIn.jsx';
 import SignUp from './components/SignUp/SignUp.jsx'; 
 import YelpSearchResult from './components/YelpSearchResult/YelpSearchResult.jsx';
 import Header from './components/Header/Header.jsx';
+import FavoritesList from './components/FavoritesList/FavoritesList';
 import { searchYelp } from './api/yelpApi';
 import { UserContext, UserProvider } from './context/userContext.jsx';
 import './App.css';
@@ -68,6 +69,7 @@ const AppContent = () => {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="*" element={<Navigate to="/" />} /> 
+        <Route path="/my-list" element={<FavoritesList />} />
       </Routes>
     </>
   );

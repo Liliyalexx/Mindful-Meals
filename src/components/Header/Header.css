@@ -76,6 +76,8 @@
   justify-content: center;
   gap: 0.75rem;
   width: 100%;
+  margin-right: 50px;
+
 }
 
 .custom__button:hover {
@@ -102,12 +104,6 @@
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.map {
-  height: 100%;
-  width: 100%;
-  border: 2px solid var(--color-golden);
 }
 
 /* Responsive Adjustments */
@@ -166,4 +162,20 @@
 
 .is-searching {
   animation: pulse 1.5s ease-in-out infinite;
+}
+
+.map-container {
+  margin: 3rem;
+  margin-right:10rem;
+  height: 500px;
+  width: 100%;
+    border-radius: 8px;
+    border: 3px solid gold;
+    position: relative;
+    outline-style: none;
+ /* Increase this value to add more space */
+}
+.map{
+  height: 100%;
+  width: 100%;
 }

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef  } from 'react';
+import 'leaflet/dist/leaflet.css';
 import './Header.css';
 import  SubHeading from '../../components/SubHeading/SubHeading';
 import { searchYelp } from '../../api/yelpApi';
 import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
 import yelpLogo from '../../assets/yelpSearch.png';
 
 const Header = ({ handleSearch, restaurants }) => {
@@ -17,7 +17,7 @@ const Header = ({ handleSearch, restaurants }) => {
     );
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
+      attribution: '© OpenStreetMap'
     }).addTo(map);
 
     restaurants.forEach(biz => {

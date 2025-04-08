@@ -9,8 +9,8 @@ const YelpSearchPage = () => {
   useEffect(() => {
     const fetchSearchResults = async () => {
       try {
-        const data = await searchYelp('restaurant'); // Example query
-        setResults(data.businesses); // Assuming the API response contains 'businesses'
+        const data = await searchYelp('restaurant'); 
+        setResults(data.businesses); 
         setLoading(false);
       } catch (error) {
         console.error('Error fetching Yelp results:', error);

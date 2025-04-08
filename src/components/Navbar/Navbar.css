@@ -158,3 +158,15 @@
         height: auto;
     }
 }
+
+.my-list-link {
+    display: flex;
+    align-items: center;
+    color: var(--color-white);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .my-list-link:hover {
+    color: var(--color-golden);
+  }
