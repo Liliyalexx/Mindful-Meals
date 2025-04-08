@@ -15,7 +15,7 @@ export const searchYelp = async (term, location, category = 'gluten_free') => {
 
     const data = await response.json();
     console.log('Yelp searchResults:', data);
-    return data.businesses; // ✅ Only return the array!
+    return data.businesses; 
   } catch (error) {
     console.error('Error fetching Yelp data:', error);
     throw error;

@@ -1,4 +1,3 @@
-// src/components/SignIn/SignIn.jsx
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signIn } from '../../services/authService';
@@ -10,7 +9,7 @@ function SignIn() {
     const { setUser } = useContext(UserContext);
     const [message, setMessage] = useState('');
     const [formData, setFormData] = useState({
-        email: '',
+        username: '',  // Must match backend exactly
         password: ''
     });
 
@@ -21,19 +20,22 @@ function SignIn() {
             [evt.target.name]: evt.target.value
         });
     };
+
     const handleSubmit = async (evt) => {
-      evt.preventDefault();
-      try {
-        const signedInUser = await signIn({
-          username: formData.email,  // 👈 This must match what backend expects
-          password: formData.password
-        });
-        setUser(signedInUser);
-        navigate('/');
-      } catch (error) {
-        setMessage(error.message || 'Login failed. Please try again.');
-      }
+        evt.preventDefault();
+        try {
+            const response = await signIn({
+                username: formData.username,  // Exact match to backend
+                password: formData.password
+            });
+            setUser(response.user);
+            navigate('/');
+        } catch (error) {
+            setMessage(error.response?.data?.error || 'Login failed. Please try again.');
+            console.error('Login error:', error.response?.data);
+        }
     };
+
     return (
         <div className="signin-page bg-black text-white min-h-screen p-6 flex flex-col md:flex-row justify-center items-center">
             <div className="signin-container bg-white shadow-lg rounded-lg p-8 w-full max-w-md mb-8 md:mb-0 md:mr-8">
@@ -42,17 +44,15 @@ function SignIn() {
                 <form onSubmit={handleSubmit}>
                     <input 
                         className="border p-3 w-full mb-4 rounded" 
-                        autoComplete='email'
-                        type="email" 
-                        name="email" 
-                        placeholder="Email" 
-                        value={formData.email}
+                        type="text"  // Changed from email to text
+                        name="username"  // Changed from email to username
+                        placeholder="Username"  // Changed from Email to Username
+                        value={formData.username}
                         onChange={handleChange}
                         required
                     />
                     <input 
                         className="border p-3 w-full mb-4 rounded" 
-                        autoComplete='email'
                         type="password" 
                         name="password" 
                         placeholder="Password" 
