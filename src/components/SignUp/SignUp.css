@@ -1,0 +1,123 @@
+/* src/components/Auth/Auth.css */
+.auth-page {
+    background-color: var(--color-black);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+  }
+  
+  .auth-container {
+    background-color: var(--color-white);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 450px;
+    margin: 0 1rem;
+  }
+  
+  .auth-container h2 {
+    font-family: var(--font-base);
+    color: var(--color-black);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .auth-form input {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-grey);
+    color: var(--color-black);
+    font-family: var(--font-base);
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    width: 100%;
+    transition: all 0.3s ease;
+  }
+  
+  .auth-form input:focus {
+    border-color: var(--color-golden);
+    outline: none;
+  }
+  
+  .auth-button {
+    background-color: var(--color-golden);
+    color: var(--color-black);
+    font-family: var(--font-base);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    width: 100%;
+  }
+  
+  .auth-button:hover {
+    background-color: var(--color-crimson);
+    color: var(--color-white);
+  }
+  
+  .auth-toggle {
+    color: var(--color-black);
+    font-family: var(--font-base);
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+  
+  .auth-toggle button {
+    color: var(--color-golden);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  
+  .auth-toggle button:hover {
+    text-decoration: underline;
+  }
+  
+  .error-message {
+    color: var(--color-crimson);
+    text-align: center;
+    margin-bottom: 1rem;
+    font-family: var(--font-base);
+  }
+  
+  .image-container {
+    display: none;
+  }
+  
+  @media screen and (min-width: 768px) {
+    .auth-page {
+      flex-direction: row;
+      gap: 3rem;
+    }
+    
+    .image-container {
+      display: block;
+      flex: 1;
+      max-width: 500px;
+    }
+    
+    .image-container img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+  }

@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef  } from 'react';
-import images from '../../constants/images';
 import './Header.css';
-import { SubHeading } from '../../components';
+import  SubHeading from '../../components/SubHeading/SubHeading';
 import { searchYelp } from '../../api/yelpApi';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-const Header = ({ handleSearch, hasResults, isLoading, restaurants }) => {
+import yelpLogo from '../../assets/yelpSearch.png';
+
+const Header = ({ handleSearch, restaurants }) => {
   const mapRef = useRef(null);
   useEffect(() => {
     if (!mapRef.current || !restaurants?.length) return;
@@ -98,11 +99,8 @@ const Header = ({ handleSearch, hasResults, isLoading, restaurants }) => {
             className="custom__button"
             disabled={isSearching}
           >
-            <img
-          src={images.yelpSearch}
-          alt="Yelp Logo"
-          className="yelp-logo"
-        />
+           <img src={yelpLogo} alt="Yelp Logo" />
+
             {isSearching ? 'Searching...' : 'Search Yelp'}
           </button>
         </form>

@@ -1,0 +1,122 @@
+.app__search-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Increased gap size */
+  width: 100%;
+  max-width: 750px; /* Increased max-width by 50% */
+  margin: 3rem 0; /* Increased margin */
+}
+
+.app__search-input {
+  background-color: var(--color-crimson);
+  color: var(--color-black);
+  font-family: var(--font-base);
+  font-weight: 700;
+  letter-spacing: 0.06em; /* Increased letter spacing */
+  line-height: 42px; /* Increased line-height */
+  font-size: 24px; /* Increased font size by 50% */
+  padding: 0.75rem 2.25rem; /* Increased padding */
+  border-radius: 1.5px; /* Increased border-radius */
+  border: none;
+  outline: none;
+  width: 200%;
+  transition: 0.3s ease;
+}
+
+.app__search-input::placeholder {
+  color: var(--color-grey);
+  opacity: 0.7;
+  text-transform: capitalize;
+}
+
+.app__search-input:focus {
+  background-color: var(--color-golden);
+  color: var(--color-white);
+}
+
+.custom__button {
+  background-color: #d32323;
+  color: white;
+  font-weight: bold;
+  font-size: 1.5rem; 
+  padding: 1.125rem 2.25rem; 
+  border: none;
+  border-radius: 12px; 
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px; 
+  width: auto;
+}
+
+.custom__button img {
+  width: 45px; 
+  height: 45px;
+  object-fit: contain;
+}
+
+.custom__button:hover {
+  background-color: #b21f1f;
+}
+
+.custom__button:disabled {
+  background-color: #e87c7c;
+  cursor: not-allowed;
+}
+
+.app__wrapper_img {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 3rem; 
+}
+
+@media screen and (min-width: 768px) {
+  .app__search-container {
+    flex-direction: row;
+    gap: 1.5rem; 
+  }
+
+  .app__search-input {
+    width: 45%; 
+  }
+
+  .custom__button {
+    width: 45%; 
+  }
+}
+
+@media screen and (max-width: 1150px) {
+  .app__search-container {
+    flex-direction: column;
+    gap: 1.5rem; 
+  }
+
+  .app__search-input {
+    width: 100%; 
+  }
+
+  .custom__button {
+    width: 100%; 
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .app__search-input,
+  .custom__button {
+    font-size: 21px; 
+    line-height: 36px; 
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .app__search-input,
+  .custom__button {
+    font-size: 18px; 
+    line-height: 30px; 
+  }
+}

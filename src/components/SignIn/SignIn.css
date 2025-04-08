@@ -1,158 +1,128 @@
-body {
-    background-image: url(../../assets/signup-inpage.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* src/components/Auth/Auth.css */
+body{
+  background-image: url('../../assets/signup-inpage.png');
+  background-position:center;
+
+}
+.auth-page {
+  background-color: var(--color-black);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.auth-container {
+  background-color: var(--color-white);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 1rem;
+}
+
+.auth-container h2 {
+  font-family: var(--font-base);
+  color: var(--color-black);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.auth-form input {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-grey);
+  color: var(--color-black);
+  font-family: var(--font-base);
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.auth-form input:focus {
+  border-color: var(--color-golden);
+  outline: none;
+}
+
+.auth-button {
+  background-color: var(--color-golden);
+  color: var(--color-black);
+  font-family: var(--font-base);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.auth-button:hover {
+  background-color: var(--color-crimson);
+  color: var(--color-white);
+}
+
+.auth-toggle {
+  color: var(--color-black);
+  font-family: var(--font-base);
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.auth-toggle button {
+  color: var(--color-golden);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.auth-toggle button:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: var(--color-crimson);
+  text-align: center;
+  margin-bottom: 1rem;
+  font-family: var(--font-base);
+}
+
+.image-container {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .auth-page {
+    flex-direction: row;
+    gap: 3rem;
   }
   
-  .auth-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    backdrop-filter: blur(5px);
-    background-image: url(../../assets/signup-inpage.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-  
-  .auth-modal-content {
-    background-color: var(--color-white);
-    border-radius: 12px;
-    padding: 2.5rem;
-    width: 90%;
-    max-width: 450px;
-    position: relative;
-    animation: modalFadeIn 0.3s ease;
-    box-shadow: 0 0 25px rgba(255, 215, 0, 0.3); /* gold glow */
-  }
-  
-  @keyframes modalFadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  
-  .auth-modal-close {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--color-black);
-  }
-  
-  .auth-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .auth-form input {
-    padding: 0.75rem 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-  }
-  
-  .auth-form input:focus {
-    border-color: #d4af37; /* gold */
-    outline: none;
-    box-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
-  }
-  
-  .auth-form button {
-    background-color: #d4af37; /* gold */
-    color: white;
-    font-weight: bold;
-    padding: 0.75rem 1rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .auth-form button:hover {
-    background-color: #bfa335;
-  }
-  :root {
-    --color-gold: #d4af37;
-  }
-  /* Increase container size and improve visual polish */
-.signin-container {
-    background-color: rgba(255, 255, 255, 0.95);
-    padding: 3rem 2.5rem;
-    border-radius: 1rem;
-    box-shadow: 0 0 25px rgba(212, 175, 55, 0.3); /* gold glow */
-    width: 100%;
-    max-width: 520px; /* increased width */
-    transition: transform 0.3s ease;
-  }
-  
-  .signin-container:hover {
-    transform: scale(1.02);
-  }
-  
-  /* Inputs: larger, cleaner */
-  .signin-container input {
-    padding: 1rem;
-    font-size: 1.1rem;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    margin-bottom: 1.2rem;
-  }
-  
-  .signin-container input:focus {
-    border-color: var(--color-gold);
-    box-shadow: 0 0 6px rgba(212, 175, 55, 0.5);
-    outline: none;
-  }
-  
-  /* Golden button */
-  .bg-golden {
-    background-color: var(--color-gold);
-    color: white;
-    font-weight: bold;
-    font-size: 1.1rem;
-  }
-  
-  .bg-golden:hover {
-    background-color: #bfa335;
-  }
-  
-  /* Link gold style */
-  .text-golden {
-    color: var(--color-gold);
-    font-weight: 600;
-    text-decoration: underline;
-  }
-  
-  .text-golden:hover {
-    color: #bfa335;
-  }
-  
-  /* Optional image container polish */
   .image-container {
-    max-width: 350px;
-    padding: 1rem;
-  }
-  p{
-    color:white;
-  }
-  h2{
-    color: #bfa335;
-    font-size: 50px;
-    text-align: center;
+    display: block;
+    flex: 1;
+    max-width: 500px;
   }
   
+  .image-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}

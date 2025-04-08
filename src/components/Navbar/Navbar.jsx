@@ -1,67 +1,71 @@
+// src/components/Navbar/Navbar.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
-import './Navbar.css';
-import images from '../../constants/images';
+import { Link, useNavigate } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdOutlineRestaurantMenu } from 'react-icons/md';
+import { useContext } from 'react';
+import { UserContext } from '../../context/userContext.jsx';
+import logo from '../../assets/mindful_meals.png';
+import './Navbar.css';
 
-const Navbar = ({ 
-  isAuthenticated, 
-  onLoginClick, 
-  onSignupClick, 
-  onLogoutClick,
-  showAuthForm,
-  setShowAuthForm
-}) => {
+const Navbar = () => {
   const [toggleMenu, setToggleMenu] = React.useState(false);
+  const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+    navigate('/');
+  };
 
   return (
     <nav className='app__navbar'>
       <div className='app__navbar-logo'>
         <Link to="/">
-          <img src={images.mindfulMeals} alt="logo" />
+          <img src={logo} alt="logo" />
         </Link>
       </div>
 
       <ul className='app__navbar-links'>
-        <li className='p__opensans'><Link to="/">Home</Link></li>
-        <li className='p__opensans'><a href="#about">About</a></li>
-        <li className='p__opensans'><a href="#gallery">Gallery</a></li>
-        <li className='p__opensans'><a href="#contact">Contact Us</a></li>
+        <li className='navbar-link-item'><Link to="/">Home</Link></li>
+        <li className='navbar-link-item'><a href="#about">About</a></li>
+        <li className='navbar-link-item'><a href="#gallery">Gallery</a></li>
+        <li className='navbar-link-item'><a href="#contact">Contact Us</a></li>
       </ul>
       
       <div className="app__navbar-login">
-  {isAuthenticated ? (
-    <>
-      <button 
-        onClick={onLogoutClick} 
-        className="navbar-auth-button"
-      >
-        Logout
-      </button>
-      <div className="navbar-auth-divider" />
-      <a href="/" className="navbar-auth-button">
-        Book Table
-      </a>
-    </>
-  ) : (
-    <>
-      <button 
-        onClick={onLoginClick} 
-        className="navbar-auth-button"
-      >
-        Login
-      </button>
-      <div className="navbar-auth-divider" />
-      <button 
-        onClick={onSignupClick} 
-        className="navbar-auth-button"
-      >
-        Register
-      </button>
-    </>
-  )}
-</div>
+        {user ? (
+          <>
+            <button 
+              onClick={handleLogout} 
+              className="navbar-auth-button"
+            >
+              Logout
+            </button>
+            <div className="navbar-auth-divider" />
+            <a href="/" className="navbar-auth-button">
+              Book Table
+            </a>
+          </>
+        ) : (
+          <>
+          <button 
+              onClick={() => navigate('/sign-in')} 
+              className="navbar-auth-button"
+          >
+              Login
+          </button>
+          <div className="navbar-auth-divider" />
+          <button 
+              onClick={() => navigate('/sign-up')} // Changed from '/landing'
+              className="navbar-auth-button"
+          >
+              Register
+          </button>
+      </>
+        )}
+      </div>
 
       <div className='app__navbar-smallscreen'>
         <GiHamburgerMenu 
@@ -78,25 +82,25 @@ const Navbar = ({
               onClick={() => setToggleMenu(false)} 
             />
             <ul className='app__navbar-smallscreen_links'>
-              <li className='p__opensans'><Link to="/">Home</Link></li>
-              <li className='p__opensans'><a href="#about">About</a></li>
-              <li className='p__opensans'><a href="#gallery">Gallery</a></li>
-              <li className='p__opensans'><a href="#contact">Contact Us</a></li>
-              {isAuthenticated ? (
-                <li className='p__opensans'>
-                  <button onClick={onLogoutClick}>Logout</button>
+              <li className='navbar-link-item'><Link to="/">Home</Link></li>
+              <li className='navbar-link-item'><a href="#about">About</a></li>
+              <li className='navbar-link-item'><a href="#gallery">Gallery</a></li>
+              <li className='navbar-link-item'><a href="#contact">Contact Us</a></li>
+              {user ? (
+                <li className='navbar-link-item'>
+                  <button onClick={handleLogout}>Logout</button>
                 </li>
               ) : (
                 <>
-                  <li className='p__opensans'>
+                  <li className='navbar-link-item'>
                     <button onClick={() => {
-                      onLoginClick();
+                      navigate('/sign-in');
                       setToggleMenu(false);
                     }}>Login</button>
                   </li>
-                  <li className='p__opensans'>
+                  <li className='navbar-link-item'>
                     <button onClick={() => {
-                      onSignupClick();
+                      navigate('/landing');
                       setToggleMenu(false);
                     }}>Register</button>
                   </li>
