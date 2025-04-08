@@ -6,6 +6,7 @@ import { MdOutlineRestaurantMenu } from 'react-icons/md';
 import { useContext } from 'react';
 import { UserContext } from '../../context/userContext.jsx';
 import logo from '../../assets/mindful_meals.png';
+import { FaHeart } from 'react-icons/fa';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -32,7 +33,15 @@ const Navbar = () => {
         <li className='navbar-link-item'><a href="#about">About</a></li>
         <li className='navbar-link-item'><a href="#gallery">Gallery</a></li>
         <li className='navbar-link-item'><a href="#contact">Contact Us</a></li>
-      </ul>
+        {user && (
+    <li className='navbar-link-item'>
+      <Link to="/my-list" className="my-list-link">
+        <FaHeart style={{ marginRight: '5px' }} /> My List
+      </Link>
+    </li>
+  )}
+</ul>
+      
       
       <div className="app__navbar-login">
         {user ? (
