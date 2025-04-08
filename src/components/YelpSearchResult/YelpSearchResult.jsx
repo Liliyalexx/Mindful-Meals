@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { UserContext } from '../../context/userContext';
+import { FaRegHeart, FaHeart, FaComment } from 'react-icons/fa';
 import { fetchReviews } from '../../api/yelpApi';
+import CommentModal from '../CommentModal/CommentModal';
 import './YelpSearchResult.css';
 
 const YelpSearchResult = ({ results, dietaryPreference }) => {
+  const { user, toggleFavorite, isFavorite } = useContext(UserContext);
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [selectedRestaurantForComment, setSelectedRestaurantForComment] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [isLoadingReviews, setIsLoadingReviews] = useState(false);
@@ -57,6 +63,42 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
     }
   };
 
+  const handleAddComment = (restaurant) => {
+    if (!user) {
+      alert('Please log in to leave comments');
+      return;
+    }
+    setSelectedRestaurantForComment(restaurant);
+    setShowCommentModal(true);
+  };
+
+  const handleSubmitComment = async (restaurantId, commentText) => {
+    try {
+      // Replace with your actual API endpoint
+      const response = await fetch('/api/comments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({
+          restaurantId,
+          text: commentText
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit comment');
+      }
+
+      console.log('Comment submitted successfully');
+      // Optionally refresh comments or show success message
+    } catch (error) {
+      console.error('Comment submission error:', error);
+      // Show error to user
+    }
+  };
+
   return (
     <div className="yelp-results-container">
       <h2 className="results-title">Found {results.length} Restaurants</h2>
@@ -75,6 +117,19 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
                   e.target.src = '/placeholder-restaurant.jpg';
                 }}
               />
+              {user && (
+                <button 
+                  className="favorite-button"
+                  onClick={() => toggleFavorite(restaurant)}
+                  aria-label={isFavorite(restaurant.id) ? 'Remove from favorites' : 'Add to favorites'}
+                >
+                  {isFavorite(restaurant.id) ? (
+                    <FaHeart className="heart-icon filled" />
+                  ) : (
+                    <FaRegHeart className="heart-icon" />
+                  )}
+                </button>
+              )}
             </div>
             <div className="restaurant-info">
               <h3>{restaurant.name}</h3>
@@ -86,13 +141,21 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
                 <span className="review-count">({restaurant.review_count} reviews)</span>
                 <span className="price">{restaurant.price || 'Price not available'}</span>
               </div>
-              <button 
-                onClick={() => handleFetchReviews(restaurant.id)}
-                className="reviews-button"
-                disabled={isLoadingReviews}
-              >
-                {isLoadingReviews ? 'Loading...' : `Show ${currentDietaryName} Reviews`}
-              </button>
+              <div className="action-buttons">
+                <button 
+                  onClick={() => handleFetchReviews(restaurant.id)}
+                  className="reviews-button"
+                  disabled={isLoadingReviews}
+                >
+                  {isLoadingReviews ? 'Loading...' : `Show ${currentDietaryName} Reviews`}
+                </button>
+                <button 
+                  onClick={() => handleAddComment(restaurant)}
+                  className="comment-button"
+                >
+                  <FaComment /> Comment
+                </button>
+              </div>
             </div>
           </div>
         ))}
@@ -141,6 +204,13 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
         )}
       </div>
       
+      {showCommentModal && (
+        <CommentModal
+          restaurant={selectedRestaurantForComment}
+          onClose={() => setShowCommentModal(false)}
+          onSubmit={handleSubmitComment}
+        />
+      )}
     </div>
   );
 };
