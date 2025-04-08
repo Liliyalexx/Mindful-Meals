@@ -1,10 +1,36 @@
-import React, { useState } from 'react';
-import images from '../../constants/images';
+import React, { useState, useEffect, useRef  } from 'react';
 import './Header.css';
-import { SubHeading } from '../../components';
+import  SubHeading from '../../components/SubHeading/SubHeading';
 import { searchYelp } from '../../api/yelpApi';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import yelpLogo from '../../assets/yelpSearch.png';
 
-const Header = ({ handleSearch, hasResults }) => {
+const Header = ({ handleSearch, restaurants }) => {
+  const mapRef = useRef(null);
+  useEffect(() => {
+    if (!mapRef.current || !restaurants?.length) return;
+
+    const map = L.map(mapRef.current).setView(
+      [restaurants[0].coordinates.latitude, restaurants[0].coordinates.longitude], 
+      13
+    );
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    restaurants.forEach(biz => {
+      L.marker([biz.coordinates.latitude, biz.coordinates.longitude])
+        .bindPopup(`<b>${biz.name}</b><br>Rating: ${biz.rating} ★`)
+        .addTo(map);
+    });
+
+    return () => map.remove();
+  }, [restaurants]);
+
+
+
   const [searchTerm, setSearchTerm] = useState('');
   const [location, setLocation] = useState('');
   const [category, setCategory] = useState('gluten_free');
@@ -23,7 +49,7 @@ const Header = ({ handleSearch, hasResults }) => {
     e.preventDefault();
     setIsSearching(true);
     try {
-      await handleSearch(searchTerm, location, category); // Pass the parameters
+      await handleSearch(searchTerm, location, category); 
     } catch (error) {
       console.error('Yelp API error:', error);
     } finally {
@@ -73,24 +99,22 @@ const Header = ({ handleSearch, hasResults }) => {
             className="custom__button"
             disabled={isSearching}
           >
-            <img
-          src={images.yelpSearch}
-          alt="Yelp Logo"
-          className="yelp-logo"
-        />
+           <img src={yelpLogo} alt="Yelp Logo" />
+
             {isSearching ? 'Searching...' : 'Search Yelp'}
           </button>
         </form>
       </div>
-
-      {/* Only show welcome image when no search results yet */}
-      {!hasResults && (
-        <div className='app__wrapper_img'>
-          <img src={images.welcome} alt="header img" />
-        </div>
-      )}
+        {/* Map below the search form */}
+  <div className='map-container' style={{ marginTop: '3rem' }}>
+    <div className='map' ref={mapRef} style={{ height: '500px', width: '700px', borderRadius: '8px', border: '3px solid gold' }} />
+  </div>
     </div>
   );
 };
 
 export default Header;
+
+
+
+

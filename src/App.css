@@ -253,3 +253,19 @@
   font-size: 1.2rem;
   color: #333;
 }
+.auth-modal {
+  backdrop-filter: blur(5px);
+}
+
+.auth-modal form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-modal input {
+  border: 1px solid #ddd;
+}
+
+.auth-modal button[type="submit"] {
+  margin-top: 1rem;
+}

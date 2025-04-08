@@ -188,3 +188,10 @@
     padding: 15px;
   }
 }
+.app__wrapper_img {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 3rem; 
+}

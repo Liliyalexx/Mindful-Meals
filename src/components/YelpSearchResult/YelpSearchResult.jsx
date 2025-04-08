@@ -140,6 +140,7 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
           </div>
         )}
       </div>
+      
     </div>
   );
 };
