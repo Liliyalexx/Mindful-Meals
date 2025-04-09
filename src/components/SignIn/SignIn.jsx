@@ -22,17 +22,20 @@ function SignIn() {
         });
     };
     const handleSubmit = async (evt) => {
-      evt.preventDefault();
-      try {
-        const signedInUser = await signIn({
-          username: formData.email,  // 👈 This must match what backend expects
-          password: formData.password
-        });
-        setUser(signedInUser);
-        navigate('/');
-      } catch (error) {
-        setMessage(error.message || 'Login failed. Please try again.');
-      }
+        evt.preventDefault();
+        try {
+            const signedInUser = await signIn({
+            username: formData.email,  // 👈 This must match what backend expects
+            password: formData.password
+            });
+            setUser(signedInUser);
+            navigate('/');
+        } catch (error) {
+            const errMsg =
+            error.response?.data?.error || error.message || 'Login failed. Please try again.';
+            console.error('Login error:', errMsg);
+            setMessage(errMsg);
+        }
     };
     return (
         <div className="signin-page">
@@ -62,7 +65,7 @@ function SignIn() {
 
             <div className="signin-toggle">
                 Don't have an account?{' '}
-                <button onClick={() => navigate('/landing')}>Sign Up</button>
+                <button onClick={() => navigate('/sign-up')}>Sign Up</button>
             </div>
         </div>
     </div>

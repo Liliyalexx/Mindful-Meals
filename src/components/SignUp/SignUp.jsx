@@ -9,7 +9,6 @@ function SignUp() {
   const { setUser } = useContext(UserContext);
   const [message, setMessage] = useState('');
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
     password: '',
     passwordConf: ''
@@ -50,15 +49,7 @@ function SignUp() {
         {message && <div className="error-message">{message}</div>}
         <form onSubmit={handleSubmit}>
           <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-          <input
-           autoComplete='email'
+            autoComplete='email'
             type="email"
             name="email"
             placeholder="Email"
@@ -85,6 +76,10 @@ function SignUp() {
           />
           <button type="submit">Create Account</button>
         </form>
+        <div className="signup-toggle">
+                Already have an account?{' '}
+                <button onClick={() => navigate('/sign-in')}>Sign In</button>
+          </div>
       </div>
     </div>
   );
