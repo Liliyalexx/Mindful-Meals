@@ -76,7 +76,7 @@
 }
 
 .signin-error {
-  color: var(--color-crimson);
+  color: black;
   background-color: #ffe6e6;
   padding: 0.5rem;
   border-radius: 5px;

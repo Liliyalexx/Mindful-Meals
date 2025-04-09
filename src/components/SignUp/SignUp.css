@@ -24,6 +24,7 @@
   padding: 2.5rem;
   width: 100%;
   max-width: 420px;
+  text-align: center;
 }
 
 .signup-container h2 {
@@ -62,7 +63,7 @@
   margin-top: 1rem;
   padding: 0.75rem;
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: bold; /* 👈 changed to match Sign In */
   text-transform: uppercase;
   background-color: var(--color-golden);
   color: var(--color-black);
@@ -72,13 +73,28 @@
   transition: background-color 0.2s ease-in-out;
 }
 
+
 .signup-container button:hover {
   background-color: var(--color-crimson);
   color: var(--color-white);
 }
 
+.signup-toggle button {
+  background: none;
+  border: none;
+  color: var(--color-golden);
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.signup-toggle button:hover {
+  text-decoration: underline;
+}
+
+
 .error-message {
-  color: var(--color-crimson);
+  color: black;
   background-color: #ffe6e6;
   padding: 0.5rem;
   border-radius: 5px;
