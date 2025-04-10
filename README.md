@@ -1,7 +1,8 @@
 # Mindful Meals - Frontend
 
+### 🥗 App Logo
 
-![Mindful Meals Logo](./assets/mindful_meals.png)
+![Mindful Meals Logo](src/assets/mindful_meals.png)
 
 
 ## Table of Contents
@@ -91,8 +92,8 @@ The app is deployed using Netlify
 ## 🖼 Screenshots
 ## 🏠 ![Home Page]()
 Search restaurants by dietary preferences
-![Mindful Meals](./assets/home.png)
-![Mindful Meals](./assets/yelp_result.png)
+![Home Page](src/assets/home.png)
+![Yelp Results](src/assets/yelp_result.png)
 
 ## ❤️ Favorites Page
 View and manage your saved restaurants
@@ -113,9 +114,13 @@ See reviews filtered by dietary preference
 Planned features for future development:
 
 ✅ User Reviews — Let users post and rate restaurants
+
 ✅ Advanced Filtering — Add filters by distance, rating, and price range
+
 ✅ Meal Planning — Integrate with recipe APIs
+
 ✅ Social Features — Share favorites with friends
+
 ✅ Mobile App — Native iOS & Android apps
 
 👥 Team
