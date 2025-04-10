@@ -1,66 +1,111 @@
-// src/context/userContext.jsx
 import { createContext, useState, useEffect } from 'react';
+import axios from 'axios';
+import { getFavorites, saveFavorite, removeFavorite } from '../services/favoriteService'; 
 
 const UserContext = createContext();
 
-const getUserFromToken = () => {
-    const token = localStorage.getItem('token');
-    if(!token) return null;
-    return JSON.parse(atob(token.split('.')[1])).payload;
-}
+const getUserFromToken = (token) => {
+    if (!token) return null;
+    try {
+        return JSON.parse(atob(token.split('.')[1]));
+    } catch (error) {
+        console.error('Error parsing token:', error);
+        return null;
+    }
+};
 
 const UserProvider = ({ children }) => {
-    const [user, setUser] = useState(getUserFromToken());
+    const [user, setUser] = useState(null);
     const [favorites, setFavorites] = useState([]);
+    const [isAuthChecked, setIsAuthChecked] = useState(false); 
 
- // Load favorites from localStorage on initial render
- useEffect(() => {
-    if (user) {
-        const storedFavorites = localStorage.getItem(`favorites_${user.id}`);
-        if (storedFavorites) {
-            setFavorites(JSON.parse(storedFavorites));
-        }
-    }
-}, [user]);
-
-useEffect(() => {
-    if (user && favorites.length >= 0) {
-        localStorage.setItem(`favorites_${user.id}`, JSON.stringify(favorites));
-    }
-}, [favorites, user]);
-
-const toggleFavorite = (restaurant) => {
-    if (!user) return false;
+    useEffect(() => {
+        const verifyToken = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                setIsAuthChecked(true);
+                return;
+            }
     
-    setFavorites(prev => {
-        const isFavorited = prev.some(fav => fav.id === restaurant.id);
-        if (isFavorited) {
-            return prev.filter(fav => fav.id !== restaurant.id);
-        } else {
-            return [...prev, restaurant];
+            const userData = getUserFromToken(token);
+            if (userData) {
+                setUser(userData);
+            } else {
+                localStorage.removeItem('token');
+                setUser(null);
+            }
+        
+            setIsAuthChecked(true);
+        };
+        verifyToken();
+    }, []);
+
+    useEffect(() => {
+        const loadFavorites = async () => {
+        const token = localStorage.getItem('token');
+        if (!user || !token) return;
+
+        try {
+            const fetchedFavorites = await getFavorites(token);
+            setFavorites(fetchedFavorites);
+        } catch (error) {
+            console.error('Failed to load favorites:', error);
         }
-    });
-    return true;
-};
+        };
 
-const isFavorite = (restaurantId) => {
-    return favorites.some(fav => fav.id === restaurantId);
-};
+        loadFavorites();
+    }, [user]);
 
+    const toggleFavorite = async (restaurant) => {
+        const token = localStorage.getItem('token');
+
+        if (!user || !token) {
+            localStorage.removeItem('token');
+            setUser(null);
+            throw new Error('Please log in to save favorites');
+        }
+    
+        // Yelp search results use restaurant.id, saved favorites use restaurant.yelpId
+        const yelpId = restaurant.yelpId || restaurant.id;
+        const isFavorited = favorites.some(fav => fav.yelpId === yelpId);
+    
+        try {
+            if (isFavorited) {
+                const favoriteToRemove = favorites.find(fav => fav.yelpId === yelpId);
+                await removeFavorite(favoriteToRemove._id, token);
+                setFavorites(prev => prev.filter(fav => fav._id !== favoriteToRemove._id));
+            } else {
+                const savedRestaurant = await saveFavorite(restaurant, token);
+                setFavorites(prev => [...prev, savedRestaurant]);
+            }
+        } catch (error) {
+            console.error('Favorite operation failed:', error);
+            if (error.response?.status === 401) {
+                localStorage.removeItem('token');
+                setUser(null);
+            }
+            throw error;
+        }
+    };      
+
+    const isFavorite = (restaurantId) => {
+        return favorites.some(fav => fav.yelpId === restaurantId);
+    };
 
     const value = { 
         user, 
         setUser,
         favorites,
         toggleFavorite,
-        isFavorite
+        isFavorite,
+        isAuthChecked
     };
-    
+
     return (
         <UserContext.Provider value={value}>
-            { children }
+            {children}
         </UserContext.Provider>
     );
-}
+};
 
 export { UserContext, UserProvider };

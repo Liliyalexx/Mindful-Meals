@@ -1,18 +1,23 @@
 import React, { useState, useContext } from 'react';
 import { UserContext } from '../../context/userContext';
+import { Navigate } from 'react-router-dom';
 import { FaRegHeart, FaHeart, FaComment } from 'react-icons/fa';
 import { fetchReviews } from '../../api/yelpApi';
 import CommentModal from '../CommentModal/CommentModal';
+import { saveFavorite, removeFavorite } from '../../services/favoriteService';
+import { useNavigate } from 'react-router-dom';
 import './YelpSearchResult.css';
 
 const YelpSearchResult = ({ results, dietaryPreference }) => {
-  const { user, toggleFavorite, isFavorite } = useContext(UserContext);
+  const navigate = useNavigate();
+  const { user, favorites, toggleFavorite, isFavorite } = useContext(UserContext);
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [selectedRestaurantForComment, setSelectedRestaurantForComment] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [isLoadingReviews, setIsLoadingReviews] = useState(false);
   const [reviewsError, setReviewsError] = useState(null);
+  const [favoriteLoading, setFavoriteLoading] = useState({});
 
   const dietaryDisplayNames = {
     gluten_free: 'Gluten-Free',
@@ -74,7 +79,6 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
 
   const handleSubmitComment = async (restaurantId, commentText) => {
     try {
-      // Replace with your actual API endpoint
       const response = await fetch('/api/comments', {
         method: 'POST',
         headers: {
@@ -92,16 +96,38 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
       }
 
       console.log('Comment submitted successfully');
-      // Optionally refresh comments or show success message
+      setShowCommentModal(false);
     } catch (error) {
       console.error('Comment submission error:', error);
-      // Show error to user
+      alert('Failed to submit comment. Please try again.');
     }
   };
 
+  const handleFavoriteClick = async (restaurant) => {
+    if (!user) {
+      alert('Please log in to save favorites');
+      navigate('/sign-in');
+      return;
+    }
+  
+    setFavoriteLoading(prev => ({ ...prev, [restaurant.id]: true }));
+    
+    try {
+      await toggleFavorite(restaurant);
+    } catch (error) {
+      console.error('Favorite error:', error);
+      alert(error.message);
+      if (error.message.includes('Please login') || error.message.includes('Authentication')) {
+        navigate('/sign-in');
+      }
+    } finally {
+      setFavoriteLoading(prev => ({ ...prev, [restaurant.id]: false }));
+    }
+};
+  
   return (
     <div className="yelp-results-container">
-      <h2 className="results-title">Found {results.length} Restaurants</h2>
+      <h2 className="results-title">Found {results.length} {currentDietaryName} Restaurants</h2>
       
       <div className="restaurants-grid">
         {results.map(restaurant => (
@@ -120,10 +146,13 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
               {user && (
                 <button 
                   className="favorite-button"
-                  onClick={() => toggleFavorite(restaurant)}
+                  onClick={() => handleFavoriteClick(restaurant)}
+                  disabled={favoriteLoading[restaurant.id]}
                   aria-label={isFavorite(restaurant.id) ? 'Remove from favorites' : 'Add to favorites'}
                 >
-                  {isFavorite(restaurant.id) ? (
+                  {favoriteLoading[restaurant.id] ? (
+                    '...'
+                  ) : isFavorite(restaurant.id) ? (
                     <FaHeart className="heart-icon filled" />
                   ) : (
                     <FaRegHeart className="heart-icon" />
@@ -143,11 +172,12 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
               </div>
               <div className="action-buttons">
                 <button 
-                  onClick={() => handleFetchReviews(restaurant.id)}
+                  onClick={() => fetchReviews(restaurant.id)}
                   className="reviews-button"
                   disabled={isLoadingReviews}
                 >
-                  {isLoadingReviews ? 'Loading...' : `Show ${currentDietaryName} Reviews`}
+                  {isLoadingReviews && selectedRestaurant === restaurant.id ? 
+                    'Loading...' : `Show ${currentDietaryName} Reviews`}
                 </button>
                 <button 
                   onClick={() => handleAddComment(restaurant)}

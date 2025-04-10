@@ -35,12 +35,12 @@ const FavoritesList = () => {
       ) : (
         <div className="favorites-grid">
           {favorites.map(restaurant => (
-            <div key={restaurant.id} className="favorite-card">
+            <div key={restaurant._id} className="favorite-card">
               <div className="favorite-image">
                 <img 
-                  src={restaurant.image_url || '/placeholder-restaurant.jpg'} 
+                  src={restaurant.imageUrl || '/placeholder-restaurant.jpg'} 
                   alt={restaurant.name}
-                  onClick={() => navigate(`/restaurant/${restaurant.id}`)}
+                  onClick={() => navigate(`/restaurant/${restaurant.yelpId}`)}
                 />
                 <button 
                   className="favorite-button active"
@@ -51,10 +51,9 @@ const FavoritesList = () => {
               </div>
               <div className="favorite-info">
                 <h3>{restaurant.name}</h3>
-                <p>{restaurant.location?.address1}, {restaurant.location?.city}</p>
+                <p>{restaurant.address}</p>
                 <div className="favorite-meta">
                   <span>{restaurant.rating} ★</span>
-                  <span>{restaurant.review_count} reviews</span>
                 </div>
               </div>
             </div>

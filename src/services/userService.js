@@ -39,12 +39,14 @@ const signIn = async (formData) => {
         });
 
         const data = await res.json();
+        console.log( data);
 
         if(data.error) {
             throw new Error(data.error);
         }
 
         if(data.token) {
+            console.log(data);
             localStorage.setItem('token', data.token);
             return JSON.parse(atob(data.token.split('.')[1])).payload
         }
