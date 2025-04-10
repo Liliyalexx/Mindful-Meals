@@ -2,7 +2,8 @@
 
 ### 🥗 App Logo
 
-![Mindful Meals Logo](src/assets/mindful_meals.png)
+
+<img src="src/assets/mindful_meals.png" alt="Mindful Meals Logo" width="200"/>
 
 
 ## Table of Contents
