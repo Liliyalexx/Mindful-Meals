@@ -1,0 +1,117 @@
+/* Adjust about-container to ensure it's not hidden behind the navbar */
+.about-container {
+    padding: 20rem 2rem 2rem;  
+    position: relative;
+    background-image: url('../../assets/about-Bg.png');
+    background-size: cover;  
+    background-position: center;
+    margin: 0 auto;
+    text-align: center;
+    background-color: transparent;
+    color: var(--color-white); /* White text for visibility */
+    z-index: 1;
+}
+
+/* Dark transparent overlay for background */
+.about-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Black overlay with 50% transparency */
+    z-index: -1;  /* Ensure overlay is behind the content */
+}
+
+.about-title {
+    font-size: 3rem;
+    color: var(--color-golden);
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+}
+
+.about-description {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    color: var(--color-white);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Back button styling */
+.button-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: absolute;  /* Absolute to position it above the container */
+    top: 16rem;  /* Adjust the top spacing if needed */
+    left: 2rem;
+    z-index: 20;  /* Bring the back button to the front */
+}
+
+.back-button {
+    background-color: transparent;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--color-golden);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.back-button:hover {
+    color: var(--color-white);
+}
+
+.back-button svg {
+    margin-right: 0.5rem;  /* Add space between the icon and text */
+}
+
+/* Powered by Yelp section */
+.powered-by {
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.yelp-icon {
+    width: 20px;  /* Adjust the size of the Yelp logo */
+    height: auto;
+    margin-right: 8px;  /* Space between icon and text */
+}
+
+.yelp-link {
+    color: var(--color-golden);
+    text-decoration: none;
+}
+
+.yelp-link:hover {
+    color: var(--color-white);
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    .about-container {
+        padding: 6rem 2rem 2rem;  /* More padding on mobile for better spacing */
+    }
+
+    .about-title {
+        font-size: 2.5rem;
+    }
+
+    .about-description {
+        font-size: 1.1rem;
+    }
+
+    .back-button {
+        font-size: 1rem;
+    }
+}

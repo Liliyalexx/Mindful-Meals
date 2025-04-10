@@ -9,6 +9,7 @@ import Header from './components/Header/Header.jsx';
 import FavoritesList from './components/FavoritesList/FavoritesList';
 import { searchYelp } from './api/yelpApi';
 import { UserContext, UserProvider } from './context/userContext.jsx';
+import About from './components/About/About'; 
 import './App.css';
 
 const AppContent = () => {
@@ -72,6 +73,7 @@ const AppContent = () => {
         <Route path="/landing" element={<LandingPage />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/about" element={<About />} />
         <Route path="*" element={<Navigate to="/" />} /> 
         <Route path="/my-list" element={<FavoritesList />} />
       </Routes>
