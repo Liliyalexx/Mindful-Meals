@@ -124,6 +124,6 @@ Liliya Fedyurina
 💼 LinkedIn  - [Linkedin](https://www.linkedin.com/in/liliya-fed/)
 
 
-Regina Tam
+👥 Regina Tam
 💻 GitHub - [Github](https://github.com/Reginatam429)
 💼 LinkedIn -[Linkedin](https://www.linkedin.com/in/reginatam/)
