@@ -1,6 +1,9 @@
+// src/services/authService.js
 import axios from 'axios';
+
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}/api/auth`;
 
+// SIGN UP
 export const signUp = async (userData) => {
   try {
     // Transform data to match backend expectations
@@ -19,11 +22,18 @@ export const signUp = async (userData) => {
   }
 };
 
-// authService.js
+// SIGN IN
 export const signIn = async (credentials) => {
-  const response = await axios.post(`${BASE_URL}/login`, credentials);
-  return {
-    token: response.data.token,
-    user: response.data.user
-  };
+  try {
+    const response = await axios.post(`${BASE_URL}/login`, credentials, {
+      headers: { 'Content-Type': 'application/json' }
+    });
+    return {
+      token: response.data.token,
+      user: response.data.user
+    };
+  } catch (error) {
+    console.error('Login error:', error.response?.data);
+    throw new Error(error.response?.data?.error || 'Login failed. Please try again.');
+  }
 };

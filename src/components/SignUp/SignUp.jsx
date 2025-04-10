@@ -9,8 +9,7 @@ function SignUp() {
   const { setUser } = useContext(UserContext);
   const [message, setMessage] = useState('');
   const [formData, setFormData] = useState({
-    username: '', 
-    email: '', 
+    username: '', // this is what the backend expects
     password: '',
     passwordConf: ''
   });
@@ -22,29 +21,31 @@ function SignUp() {
       [e.target.name]: e.target.value
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (formData.password !== formData.passwordConf) {
         throw new Error("Passwords don't match");
       }
-  
+
       if (formData.password.length < 6) {
         throw new Error("Password must be at least 6 characters");
       }
-  
+
       const newUser = await signUp({
-        email: formData.email,
+        username: formData.username,
         password: formData.password
       });
-      
+
       setUser(newUser);
       navigate('/');
     } catch (error) {
-      setMessage(error.message);
+      setMessage(error.message || 'Registration failed. Please try again.');
       console.error('SignUp error:', error);
     }
   };
+
   return (
     <div className="signup-page bg-black text-white min-h-screen p-6 flex flex-col md:flex-row justify-center items-center">
       <div className="signup-container bg-white shadow-lg rounded-lg p-8 w-full max-w-md mb-8 md:mb-0 md:mr-8">
@@ -54,18 +55,9 @@ function SignUp() {
           <input
             className="border p-3 w-full mb-4 rounded"
             type="text"
-            name="name"
-            placeholder="Full Name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-          <input
-            className="border p-3 w-full mb-4 rounded"
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
+            name="username"
+            placeholder="Username"
+            value={formData.username}
             onChange={handleChange}
             required
           />

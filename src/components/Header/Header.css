@@ -1,7 +1,32 @@
-/* Header.css */
 .app__header {
-  
-  padding: 4rem 0;
+  position: relative;
+  background-image: url('../../assets/header-Bg.png');
+  background-size: cover;  
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 250px;
+  padding-bottom: 4rem;
+  z-index: 0;
+}
+/* Overlay */
+.app__header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* semi-transparent black */
+  z-index: -1;
+}
+
+.app__wrapper_info {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  z-index: 2;
 }
 
 .app__header-h1 {
@@ -14,17 +39,12 @@
   margin-bottom: 1.5rem;
 }
 
-.app__wrapper_info {
-  width: 100%;
-  max-width: 650px;
-}
-
-/* Search Form Styles */
+/* Search Form */
 .app__search-container {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.25rem;
-  margin: 2.5rem 0;
+  margin-top: 2.5rem;
 }
 
 .app__search-input {
@@ -39,6 +59,10 @@
   transition: all 0.3s ease;
 }
 
+.app__search-select {
+  min-width: 250px;
+}
+
 .app__search-input::placeholder {
   color: var(--color-grey);
   opacity: 0.8;
@@ -50,16 +74,7 @@
   box-shadow: 0 0 0 2px rgba(210, 180, 40, 0.3);
 }
 
-/* Select Dropdown Styles */
-.app__search-input[type="select"] {
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 1rem;
-}
-
-/* Button Styles */
+/* Button */
 .custom__button {
   background-color: var(--color-golden);
   color: var(--color-black);
@@ -70,48 +85,48 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
+  transition: background-color 0.3s ease;
   width: 100%;
-  margin-right: 50px;
-
+  text-transform: uppercase;
 }
 
 .custom__button:hover {
-  background-color: var(--color-golden-dark);
-  transform: translateY(-2px);
+  background-color: var(--color-crimson);
+  color: var(--color-white);
 }
 
 .custom__button:disabled {
   opacity: 0.7;
   cursor: not-allowed;
-  transform: none;
 }
 
+/* Yelp Logo in button */
 .custom__button img {
   width: 24px;
   height: 24px;
   object-fit: contain;
 }
 
-/* Map Container Styles */
-.app__wrapper_img {
+/* Map */
+.map-container {
   width: 100%;
+  max-width: 700px;
   height: 500px;
+  margin: 3rem auto 0;
+  border: 3px solid var(--color-golden);
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  position: relative;
 }
 
-/* Responsive Adjustments */
-@media screen and (min-width: 768px) {
-  .app__header-h1 {
-    font-size: 4.5rem;
-  }
+.map {
+  width: 100%;
+  height: 100%;
+}
 
+/* Responsive Grid Update */
+@media screen and (min-width: 768px) {
   .app__search-container {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -123,12 +138,8 @@
 }
 
 @media screen and (min-width: 1024px) {
-  .app__header {
-    padding: 6rem 0;
-  }
-
   .app__header-h1 {
-    font-size: 5.5rem;
+    font-size: 5rem;
   }
 
   .app__search-container {
@@ -139,43 +150,4 @@
   .app__search-container button {
     grid-column: auto;
   }
-}
-
-@media screen and (min-width: 2000px) {
-  .app__header-h1 {
-    font-size: 7rem;
-  }
-
-  .app__search-input,
-  .custom__button {
-    font-size: 1.25rem;
-    padding: 1.25rem 2rem;
-  }
-}
-
-/* Animation for loading state */
-@keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
-}
-
-.is-searching {
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-.map-container {
-  margin: 3rem;
-  margin-right:10rem;
-  height: 500px;
-  width: 100%;
-    border-radius: 8px;
-    border: 3px solid gold;
-    position: relative;
-    outline-style: none;
- /* Increase this value to add more space */
-}
-.map{
-  height: 100%;
-  width: 100%;
 }

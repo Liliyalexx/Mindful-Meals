@@ -1,10 +1,14 @@
 .app__navbar {
+    position: fixed;
     display: flex;
+    top: 0;
+    left: 0;
     width: 100%;
     justify-content: space-between;
     align-items: center;
     background-color: var(--color-black);
     padding: 1rem 2rem;
+    z-index: 100;
 }
 
 .app__navbar-logo {
