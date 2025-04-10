@@ -1,4 +1,3 @@
-// src/components/Navbar/Navbar.jsx
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GiHamburgerMenu } from 'react-icons/gi';
@@ -30,18 +29,15 @@ const Navbar = () => {
 
       <ul className='app__navbar-links'>
         <li className='navbar-link-item'><Link to="/">Home</Link></li>
-        <li className='navbar-link-item'><a href="#about">About</a></li>
-        <li className='navbar-link-item'><a href="#gallery">Gallery</a></li>
-        <li className='navbar-link-item'><a href="#contact">Contact Us</a></li>
+        <li className='navbar-link-item'><Link to="/about">About</Link></li>
         {user && (
-    <li className='navbar-link-item'>
-      <Link to="/my-list" className="my-list-link">
-        <FaHeart style={{ marginRight: '5px' }} /> My List
-      </Link>
-    </li>
-  )}
-</ul>
-      
+          <li className='navbar-link-item'>
+            <Link to="/my-list" className="my-list-link">
+              <FaHeart style={{ marginRight: '5px' }} /> My Favorites
+            </Link>
+          </li>
+        )}
+      </ul>
       
       <div className="app__navbar-login">
         {user ? (
@@ -59,20 +55,20 @@ const Navbar = () => {
           </>
         ) : (
           <>
-          <button 
+            <button 
               onClick={() => navigate('/sign-in')} 
               className="navbar-auth-button"
-          >
+            >
               Login
-          </button>
-          <div className="navbar-auth-divider" />
-          <button 
-              onClick={() => navigate('/sign-up')} // Changed from '/landing'
+            </button>
+            <div className="navbar-auth-divider" />
+            <button 
+              onClick={() => navigate('/sign-up')} 
               className="navbar-auth-button"
-          >
+            >
               Register
-          </button>
-      </>
+            </button>
+          </>
         )}
       </div>
 
@@ -92,9 +88,7 @@ const Navbar = () => {
             />
             <ul className='app__navbar-smallscreen_links'>
               <li className='navbar-link-item'><Link to="/">Home</Link></li>
-              <li className='navbar-link-item'><a href="#about">About</a></li>
-              <li className='navbar-link-item'><a href="#gallery">Gallery</a></li>
-              <li className='navbar-link-item'><a href="#contact">Contact Us</a></li>
+              <li className='navbar-link-item'><Link to="/about">About</Link></li> {/* Update to use Link */}
               {user ? (
                 <li className='navbar-link-item'>
                   <button onClick={handleLogout}>Logout</button>
