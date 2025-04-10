@@ -1,6 +1,8 @@
 .app__header {
   position: relative;
-  background-image: url('../../assets/welcome.png');
+  background-image: url('../../assets/header-Bg.png');
+  background-size: cover;  
+  background-position: center;
   display: flex;
   flex-direction: column;
   align-items: center;
