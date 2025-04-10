@@ -1,51 +1,37 @@
-// src/api/yelpApi.js
-
-// Use the VITE_ prefix to access environment variables
-const apiKey = import.meta.env.VITE_YELP_API_KEY;
+const BASE_URL = import.meta.env.VITE_BACK_END_SERVER_URL;
 
 export const searchYelp = async (term, location, category = 'gluten_free') => {
-  const url = `https://api.yelp.com/v3/businesses/search?term=${term}&location=${location}&categories=${category}`;
+  const url = `${BASE_URL}/api/yelp/search?term=${encodeURIComponent(term)}&location=${encodeURIComponent(location)}&category=${encodeURIComponent(category)}`;
+
+  console.log('🔍 Yelp Search Request URL:', url); // Add this line
 
   try {
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-      },
-    });
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`Search request failed: ${response.status} ${response.statusText}`);
+    }
 
     const data = await response.json();
-    console.log('Yelp searchResults:', data);
-    return data.businesses; 
+    return data.businesses;
   } catch (error) {
-    console.error('Error fetching Yelp data:', error);
+    console.error('❌ Error fetching Yelp data:', error);
     throw error;
   }
 };
 
-// Add a fetchReviews function if you want to fetch reviews for a specific business
 export const fetchReviews = async (businessId) => {
-    try {
-      const response = await fetch(`https://api.yelp.com/v3/businesses/${businessId}/reviews`, {
-        headers: { 
-          Authorization: `Bearer ${apiKey}`,
-          'Content-Type': 'application/json'
-        }
-      });
-  
-      if (!response.ok) {
-        throw new Error(`Yelp API error: ${response.status} ${response.statusText}`);
-      }
-  
-      const data = await response.json();
-      
-      // Validate the response structure
-      if (!data || !Array.isArray(data.reviews)) {
-        throw new Error('Invalid reviews data structure');
-      }
-  
-      return data.reviews;
-    } catch (error) {
-      console.error('Failed to fetch reviews:', error);
-      throw error;
+  try {
+    const response = await fetch(`${BASE_URL}/api/yelp/business/${businessId}`);
+    
+    if (!response.ok) {
+      throw new Error(`Review request failed: ${response.status} ${response.statusText}`);
     }
-  };
+
+    const data = await response.json();
+    return data.reviews || [];
+  } catch (error) {
+    console.error('Failed to fetch reviews:', error);
+    throw error;
+  }
+};

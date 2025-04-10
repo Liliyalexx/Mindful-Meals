@@ -37,7 +37,7 @@ export const saveFavorite = async (restaurant, token) => {
     }, {
       headers: {
         Authorization: `Bearer ${token}`, 
-         'Content-Type': 'application/json'
+        'Content-Type': 'application/json'
       }
     });
     console.log('Response received:', response);
@@ -52,7 +52,7 @@ export const saveFavorite = async (restaurant, token) => {
 // Remove a restaurant from favorites
 export const removeFavorite = async (restaurantId, token) => {
   try {
-    await axios.delete(`${API_BASE_URL}/saved/${restaurantId}`, {
+    await axios.delete(`${API_BASE_URL}/api/saved/${restaurantId}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }

@@ -30,7 +30,10 @@ function SignIn() {
         });
 
         localStorage.setItem('token', signedInUser.token);
-        setUser(signedInUser.user);
+        setUser({
+            ...signedInUser.user,
+            userId: signedInUser.user.id // explicitly add userId
+        });
         navigate('/');
         } catch (error) {
         const errMsg = error.response?.data?.error || error.message || 'Login failed. Please try again.';
