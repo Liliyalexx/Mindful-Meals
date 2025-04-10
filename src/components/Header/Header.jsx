@@ -1,41 +1,61 @@
-import React, { useState, useEffect, useRef  } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import 'leaflet/dist/leaflet.css';
 import './Header.css';
-import  SubHeading from '../../components/SubHeading/SubHeading';
+import SubHeading from '../../components/SubHeading/SubHeading';
 import { searchYelp } from '../../api/yelpApi';
 import L from 'leaflet';
-import yelpLogo from '../../assets/yelpSearch.png';
 
 const Header = ({ handleSearch, restaurants }) => {
   const mapRef = useRef(null);
-  useEffect(() => {
-    if (!mapRef.current || !restaurants?.length) return;
+  const mapInstanceRef = useRef(null); // to store Leaflet map instance
 
-    const map = L.map(mapRef.current).setView(
-      [restaurants[0].coordinates.latitude, restaurants[0].coordinates.longitude], 
-      13
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    const initializeMap = (lat, lng) => {
+      if (mapInstanceRef.current) return; // prevent re-initialization
+
+      requestAnimationFrame(() => {
+        const map = L.map(mapRef.current).setView([lat, lng], 13);
+        mapInstanceRef.current = map;
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap',
+        }).addTo(map);
+
+        if (restaurants?.length) {
+          restaurants.forEach((biz) => {
+            L.marker([biz.coordinates.latitude, biz.coordinates.longitude])
+              .bindPopup(`<b>${biz.name}</b><br>Rating: ${biz.rating} ★`)
+              .addTo(map);
+          });
+        }
+      });
+    };
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        initializeMap(latitude, longitude);
+      },
+      (error) => {
+        console.warn('Geolocation failed:', error.message);
+        initializeMap(47.6062, -122.3321); // fallback to Seattle
+      }
     );
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap'
-    }).addTo(map);
-
-    restaurants.forEach(biz => {
-      L.marker([biz.coordinates.latitude, biz.coordinates.longitude])
-        .bindPopup(`<b>${biz.name}</b><br>Rating: ${biz.rating} ★`)
-        .addTo(map);
-    });
-
-    return () => map.remove();
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
+    };
   }, [restaurants]);
-
-
 
   const [searchTerm, setSearchTerm] = useState('');
   const [location, setLocation] = useState('');
-  const [category, setCategory] = useState('gluten_free');
+  const [category, setCategory] = useState('');
   const [isSearching, setIsSearching] = useState(false);
-
 
   const dietaryOptions = [
     { value: 'gluten_free', label: 'Gluten Free' },
@@ -45,11 +65,12 @@ const Header = ({ handleSearch, restaurants }) => {
     { value: 'kosher', label: 'Kosher' },
     { value: 'allergy_friendly', label: 'Allergy Friendly' }
   ];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSearching(true);
     try {
-      await handleSearch(searchTerm, location, category); 
+      await handleSearch(searchTerm, location, category);
     } catch (error) {
       console.error('Yelp API error:', error);
     } finally {
@@ -58,12 +79,12 @@ const Header = ({ handleSearch, restaurants }) => {
   };
 
   return (
-    <div className='app__header app__wrapper section__padding' id='home'>
+    <div className='app__header' id='home'>
       <div className='app__wrapper_info'>
-        <SubHeading title='Chase the new flavor' />
+        <SubHeading title='Where Taste Meets Your Lifestyle' />
         <h1 className='app__header-h1'>Find Your Restaurant</h1>
         <p className='p__opensans' style={{ margin: '2rem 0' }}>
-          Sit tellus lobortis sed senectus vivamus molestie. Condimentum volutpat morbi facilisis quam scelerisque sapien.
+          Discover restaurants tailored to your needs — whether you're gluten-free, vegan, or have specific dietary preferences. Mindful Meals helps you explore spots that align with your lifestyle, without the guesswork.
         </p>
 
         <form onSubmit={handleSubmit} className="app__search-container">
@@ -86,35 +107,41 @@ const Header = ({ handleSearch, restaurants }) => {
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="app__search-input"
+            className="app__search-input app__search-select"
+            required
           >
+            <option value="" disabled hidden>Select Dietary Preference</option>
             {dietaryOptions.map(option => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </select>
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
           <button
             type="submit"
             className="custom__button"
             disabled={isSearching}
           >
-           <img src={yelpLogo} alt="Yelp Logo" />
-
-            {isSearching ? 'Searching...' : 'Search Yelp'}
+            {isSearching ? 'Searching...' : 'Search'}
           </button>
         </form>
       </div>
-        {/* Map below the search form */}
-  <div className='map-container' style={{ marginTop: '3rem' }}>
-    <div className='map' ref={mapRef} style={{ height: '500px', width: '700px', borderRadius: '8px', border: '3px solid gold' }} />
-  </div>
+
+      {/* Map below the search form */}
+      <div className='map-container' style={{ marginTop: '3rem' }}>
+        <div
+          className='map'
+          ref={mapRef}
+          style={{
+            height: '500px',
+            width: '700px',
+            borderRadius: '8px',
+            border: '3px solid gold'
+          }}
+        />
+      </div>
     </div>
   );
 };
 
 export default Header;
-
-
-
-

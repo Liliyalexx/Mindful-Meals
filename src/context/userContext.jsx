@@ -54,7 +54,7 @@ const isFavorite = (restaurantId) => {
         favorites,
         toggleFavorite,
         isFavorite
-     };
+    };
     
     return (
         <UserContext.Provider value={value}>
