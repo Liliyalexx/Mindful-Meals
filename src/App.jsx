@@ -12,7 +12,7 @@ import { UserContext, UserProvider } from './context/userContext.jsx';
 import './App.css';
 
 const AppContent = () => {
-  const { user } = useContext(UserContext);
+  const { user,isAuthChecked } = useContext(UserContext);
   const [restaurants, setRestaurants] = useState([]);
   const [hasSearched, setHasSearched] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,6 +36,9 @@ const AppContent = () => {
       setIsLoading(false);
     }
   };
+  if (!isAuthChecked) {
+    return <div className="app__loading">Checking authentication...</div>;
+  }
 
   const HomeContent = () => (
     <div className="app__content">
@@ -60,6 +63,7 @@ const AppContent = () => {
     </div>
   );
 
+
   return (
     <>
       <Navbar />
@@ -76,6 +80,7 @@ const AppContent = () => {
 };
 
 const App = () => {
+  
   return (
     <UserProvider>
       <AppContent />

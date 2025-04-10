@@ -1,3 +1,4 @@
+// src/components/SignIn/SignIn.jsx
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signIn } from '../../services/authService';
@@ -9,9 +10,10 @@ function SignIn() {
     const { setUser } = useContext(UserContext);
     const [message, setMessage] = useState('');
     const [formData, setFormData] = useState({
-        username: '',  // Must match backend exactly
+        email: '',  
         password: ''
     });
+    
 
     const handleChange = (evt) => {
         setMessage('');
@@ -24,15 +26,13 @@ function SignIn() {
     const handleSubmit = async (evt) => {
         evt.preventDefault();
         try {
-            const response = await signIn({
-                username: formData.username,  // Exact match to backend
-                password: formData.password
-            });
-            setUser(response.user);
+            const signedInUser = await signIn(formData);  
+            console.log(signedInUser);
+            localStorage.setItem('token', signedInUser.token);
+            setUser(signedInUser.user);
             navigate('/');
         } catch (error) {
-            setMessage(error.response?.data?.error || 'Login failed. Please try again.');
-            console.error('Login error:', error.response?.data);
+            setMessage(error.message || 'Login failed. Please try again.');
         }
     };
 
@@ -44,9 +44,9 @@ function SignIn() {
                 <form onSubmit={handleSubmit}>
                     <input 
                         className="border p-3 w-full mb-4 rounded" 
-                        type="text"  // Changed from email to text
-                        name="username"  // Changed from email to username
-                        placeholder="Username"  // Changed from Email to Username
+                        type="text"  
+                        name="username"  
+                        placeholder="Username"  
                         value={formData.username}
                         onChange={handleChange}
                         required

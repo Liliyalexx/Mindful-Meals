@@ -9,7 +9,8 @@ function SignUp() {
   const { setUser } = useContext(UserContext);
   const [message, setMessage] = useState('');
   const [formData, setFormData] = useState({
-    username: '',  
+    username: '', 
+    email: '', 
     password: '',
     passwordConf: ''
   });

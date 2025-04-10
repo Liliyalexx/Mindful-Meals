@@ -19,14 +19,11 @@ export const signUp = async (userData) => {
   }
 };
 
+// authService.js
 export const signIn = async (credentials) => {
-  try {
-    const response = await axios.post(`${BASE_URL}/login`, credentials, {
-        headers: { 'Content-Type': 'application/json' }
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Login error:', error.response?.data);
-    throw new Error(error.response?.data?.error || 'Login failed. Please try again.');
-  }
+  const response = await axios.post(`${BASE_URL}/login`, credentials);
+  return {
+    token: response.data.token,
+    user: response.data.user
+  };
 };
