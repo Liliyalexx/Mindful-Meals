@@ -1,23 +1,55 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { UserContext } from '../../context/userContext';
 import { useNavigate } from 'react-router-dom';
-import { FaHeart, FaArrowLeft } from 'react-icons/fa';
+import { FaHeart, FaArrowLeft, FaComment } from 'react-icons/fa';
+import CommentModal from '../CommentModal/CommentModal';
+import { getReviewByRestaurant } from '../../services/reviewService';  // Import the service to fetch reviews
 import './FavoritesList.css';
 
 const FavoritesList = () => {
   const { user, favorites, toggleFavorite } = useContext(UserContext);
   const navigate = useNavigate();
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [selectedRestaurantForComment, setSelectedRestaurantForComment] = useState(null);
+  const [existingReview, setExistingReview] = useState(null);
 
-  if (!user) {
-    return (
-      <div className="favorites-container">
-        <div className="login-prompt">
-          <h2>Please log in to view your favorites</h2>
-          <button onClick={() => navigate('/sign-in')}>Sign In</button>
-        </div>
-      </div>
-    );
-  }
+  const handleAddComment = async (restaurant) => {
+    if (!user) {
+      alert('Please log in to leave comments');
+      return;
+    }
+  
+    try {
+      // Get the review for the restaurant
+      const review = await getReviewByRestaurant(restaurant._id);
+      setExistingReview(review);  // Set existing review if available
+      setSelectedRestaurantForComment(restaurant);
+      setShowCommentModal(true);
+    } catch (error) {
+      // Handle case where no review exists
+      setSelectedRestaurantForComment(restaurant);
+      setShowCommentModal(true);  // Open modal for creating a new review
+    }
+  };
+  
+
+  const handleFavoriteClick = async (restaurant) => {
+    if (!user) {
+      alert('Please log in to save favorites');
+      navigate('/sign-in');
+      return;
+    }
+
+    try {
+      await toggleFavorite(restaurant);
+    } catch (error) {
+      console.error('Favorite error:', error);
+      alert(error.message);
+      if (error.message.includes('Please login') || error.message.includes('Authentication')) {
+        navigate('/sign-in');
+      }
+    }
+  };
 
   return (
     <div className="favorites-container">
@@ -44,7 +76,7 @@ const FavoritesList = () => {
                 />
                 <button 
                   className="favorite-button active"
-                  onClick={() => toggleFavorite(restaurant)}
+                  onClick={() => handleFavoriteClick(restaurant)}
                 >
                   <FaHeart />
                 </button>
@@ -55,10 +87,26 @@ const FavoritesList = () => {
                 <div className="favorite-meta">
                   <span>{restaurant.rating} ★</span>
                 </div>
+                {/* My Review Button */}
+                <div className="action-buttons">
+                <button onClick={() => handleAddComment(restaurant)} className="user-review-button">
+                  {existingReview ? 'My Review' : 'Write a Review'}
+                </button>
+                </div>
               </div>
             </div>
           ))}
         </div>
+      )}
+      
+      {/* Show CommentModal if user clicks "My Review" */}
+      {showCommentModal && (
+        <CommentModal
+          restaurant={selectedRestaurantForComment}
+          existingReview={existingReview}  // Pass existing review if available
+          onClose={() => setShowCommentModal(false)}
+          onSubmit={() => setShowCommentModal(false)}  // Refresh reviews or close modal
+        />
       )}
     </div>
   );
