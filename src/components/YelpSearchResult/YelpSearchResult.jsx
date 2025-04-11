@@ -1,16 +1,13 @@
 import React, { useState, useContext } from 'react';
 import { UserContext } from '../../context/userContext';
-import { Navigate } from 'react-router-dom';
 import { FaRegHeart, FaHeart, FaComment } from 'react-icons/fa';
 import { fetchReviews } from '../../api/yelpApi';
-import CommentModal from '../CommentModal/CommentModal';
-import { saveFavorite, removeFavorite } from '../../services/favoriteService';
 import { useNavigate } from 'react-router-dom';
 import './YelpSearchResult.css';
 
 const YelpSearchResult = ({ results, dietaryPreference }) => {
   const navigate = useNavigate();
-  const { user, favorites, toggleFavorite, isFavorite } = useContext(UserContext);
+  const { user, toggleFavorite, isFavorite } = useContext(UserContext);
   const [showCommentModal, setShowCommentModal] = useState(false);
   const [selectedRestaurantForComment, setSelectedRestaurantForComment] = useState(null);
   const [reviews, setReviews] = useState([]);
@@ -43,23 +40,8 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
         return;
       }
 
-      const searchTerms = [
-        dietaryPreference.toLowerCase().replace(/_/g, '-'),
-        currentDietaryName.toLowerCase()
-      ];
-
-      const filteredReviews = response.filter(review => 
-        review?.text && searchTerms.some(term => 
-          review.text.toLowerCase().includes(term)
-        )
-      );
-
       setSelectedRestaurant(businessId);
-      setReviews(filteredReviews.length > 0 ? filteredReviews : response);
-      
-      if (filteredReviews.length === 0) {
-        setReviewsError(`No ${currentDietaryName.toLowerCase()} mentions found. Showing all reviews.`);
-      }
+      setReviews(response);
     } catch (error) {
       console.error('Review fetch error:', error);
       setReviewsError(`Failed to load reviews: ${error.message}`);
@@ -68,27 +50,15 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
     }
   };
 
-  const handleAddComment = (restaurant) => {
-    if (!user) {
-      alert('Please log in to leave comments');
-      return;
-    }
-    setSelectedRestaurantForComment(restaurant);
-    setShowCommentModal(true);
-  };
-
-  const handleSubmitComment = async (restaurantId, commentText) => {
+  const handleSubmitComment = async (restaurantId, commentData) => {
     try {
-      const response = await fetch('/api/comments', {
-        method: 'POST',
+      const response = await fetch('/api/reviews', {
+        method: 'POST',  // Use PUT if updating existing review
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify({
-          restaurantId,
-          text: commentText
-        })
+        body: JSON.stringify({ ...commentData, restaurant: restaurantId })
       });
 
       if (!response.ok) {
@@ -109,7 +79,7 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
       navigate('/sign-in');
       return;
     }
-  
+
     setFavoriteLoading(prev => ({ ...prev, [restaurant.id]: true }));
     
     try {
@@ -123,8 +93,8 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
     } finally {
       setFavoriteLoading(prev => ({ ...prev, [restaurant.id]: false }));
     }
-};
-  
+  };
+
   return (
     <div className="yelp-results-container">
       <h2 className="results-title">Found {results.length} {currentDietaryName} Restaurants</h2>
@@ -172,18 +142,12 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
               </div>
               <div className="action-buttons">
                 <button 
-                  onClick={() => fetchReviews(restaurant.id)}
+                  onClick={() => handleFetchReviews(restaurant.id)}
                   className="reviews-button"
                   disabled={isLoadingReviews}
                 >
                   {isLoadingReviews && selectedRestaurant === restaurant.id ? 
                     'Loading...' : `Show ${currentDietaryName} Reviews`}
-                </button>
-                <button 
-                  onClick={() => handleAddComment(restaurant)}
-                  className="comment-button"
-                >
-                  <FaComment /> Comment
                 </button>
               </div>
             </div>
