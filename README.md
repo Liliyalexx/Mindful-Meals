@@ -1,8 +1,5 @@
 # Mindful Meals - Frontend
 
-### 🥗 App Logo
-
-
 <img src="src/assets/mindful_meals.png" alt="Mindful Meals Logo" width="200"/>
 
 
@@ -64,7 +61,7 @@ The app is deployed using Netlify
 
 ## 🔗 Related Repositories
 🔧 Backend Repository - Mindful-Meals-Backend
-[Heroku Backend](https://mindful-meals-backend-496088380dfc.herokuapp.com/)
+[Backend Repository](https://github.com/Reginatam429/Mindful-Meals-Backend)
 
 ## 📋 Project Planning (Trello Board)
 
