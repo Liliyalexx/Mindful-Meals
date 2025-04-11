@@ -1,18 +1,22 @@
-import React, { useState, useContext } from 'react';
-import { UserContext } from '../../context/userContext';
-import { Navigate } from 'react-router-dom';
-import { FaRegHeart, FaHeart, FaComment } from 'react-icons/fa';
-import { fetchReviews } from '../../api/yelpApi';
-import CommentModal from '../CommentModal/CommentModal';
-import { saveFavorite, removeFavorite } from '../../services/favoriteService';
-import { useNavigate } from 'react-router-dom';
-import './YelpSearchResult.css';
+import React, { useState, useContext } from "react";
+import { UserContext } from "../../context/userContext";
+import { Navigate } from "react-router-dom";
+import { FaRegHeart, FaHeart, FaComment } from "react-icons/fa";
+import { fetchReviews } from "../../api/yelpApi";
+import CommentModal from "../CommentModal/CommentModal";
+import { saveFavorite, removeFavorite } from "../../services/favoriteService";
+import { useNavigate } from "react-router-dom";
+import RestaurantReviews from "../RestaurantReviews/RestaurantReviews";
+import "./YelpSearchResult.css";
 
 const YelpSearchResult = ({ results, dietaryPreference }) => {
   const navigate = useNavigate();
-  const { user, favorites, toggleFavorite, isFavorite } = useContext(UserContext);
+  const [showReviewsModal, setShowReviewsModal] = useState(false);
+  const { user, favorites, toggleFavorite, isFavorite } =
+    useContext(UserContext);
   const [showCommentModal, setShowCommentModal] = useState(false);
-  const [selectedRestaurantForComment, setSelectedRestaurantForComment] = useState(null);
+  const [selectedRestaurantForComment, setSelectedRestaurantForComment] =
+    useState(null);
   const [reviews, setReviews] = useState([]);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [isLoadingReviews, setIsLoadingReviews] = useState(false);
@@ -20,138 +24,81 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
   const [favoriteLoading, setFavoriteLoading] = useState({});
 
   const dietaryDisplayNames = {
-    gluten_free: 'Gluten-Free',
-    vegan: 'Vegan',
-    vegetarian: 'Vegetarian',
-    halal: 'Halal',
-    kosher: 'Kosher',
-    allergy_friendly: 'Allergy Friendly'
+    gluten_free: "Gluten-Free",
+    vegan: "Vegan",
+    vegetarian: "Vegetarian",
+    halal: "Halal",
+    kosher: "Kosher",
+    allergy_friendly: "Allergy Friendly",
   };
 
-  const currentDietaryName = dietaryDisplayNames[dietaryPreference] || 'Dietary';
+  const currentDietaryName =
+    dietaryDisplayNames[dietaryPreference] || "Dietary";
 
-  const handleFetchReviews = async (businessId) => {
+  const handleShowReviews = async (restaurant) => {
     setIsLoadingReviews(true);
     setReviewsError(null);
-    setReviews([]);
-    
+    setSelectedRestaurant(restaurant);
+
     try {
-      const response = await fetchReviews(businessId);
-      
-      if (!response || response.length === 0) {
-        setReviewsError('This restaurant has no reviews yet.');
-        return;
-      }
-
-      const searchTerms = [
-        dietaryPreference.toLowerCase().replace(/_/g, '-'),
-        currentDietaryName.toLowerCase()
-      ];
-
-      const filteredReviews = response.filter(review => 
-        review?.text && searchTerms.some(term => 
-          review.text.toLowerCase().includes(term)
-        )
-      );
-
-      setSelectedRestaurant(businessId);
-      setReviews(filteredReviews.length > 0 ? filteredReviews : response);
-      
-      if (filteredReviews.length === 0) {
-        setReviewsError(`No ${currentDietaryName.toLowerCase()} mentions found. Showing all reviews.`);
+      const response = await fetchReviews(restaurant.id);
+      if (!response || !Array.isArray(response)) {
+        setReviewsError("This restaurant has no reviews yet.");
+        setReviews([]);
+      } else {
+        setReviews(response);
       }
     } catch (error) {
-      console.error('Review fetch error:', error);
       setReviewsError(`Failed to load reviews: ${error.message}`);
+      setReviews([]);
     } finally {
       setIsLoadingReviews(false);
+      setShowReviewsModal(true);
     }
   };
 
-  const handleAddComment = (restaurant) => {
-    if (!user) {
-      alert('Please log in to leave comments');
-      return;
-    }
-    setSelectedRestaurantForComment(restaurant);
-    setShowCommentModal(true);
+  const handleCloseReviews = () => {
+    setShowReviewsModal(false);
   };
 
-  const handleSubmitComment = async (restaurantId, commentText) => {
-    try {
-      const response = await fetch('/api/comments', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({
-          restaurantId,
-          text: commentText
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to submit comment');
-      }
-
-      console.log('Comment submitted successfully');
-      setShowCommentModal(false);
-    } catch (error) {
-      console.error('Comment submission error:', error);
-      alert('Failed to submit comment. Please try again.');
-    }
-  };
-
-  const handleFavoriteClick = async (restaurant) => {
-    if (!user) {
-      alert('Please log in to save favorites');
-      navigate('/sign-in');
-      return;
-    }
-  
-    setFavoriteLoading(prev => ({ ...prev, [restaurant.id]: true }));
-    
-    try {
-      await toggleFavorite(restaurant);
-    } catch (error) {
-      console.error('Favorite error:', error);
-      alert(error.message);
-      if (error.message.includes('Please login') || error.message.includes('Authentication')) {
-        navigate('/sign-in');
-      }
-    } finally {
-      setFavoriteLoading(prev => ({ ...prev, [restaurant.id]: false }));
-    }
-};
-  
   return (
     <div className="yelp-results-container">
-      <h2 className="results-title">Found {results.length} {currentDietaryName} Restaurants</h2>
-      
+      <h2 className="results-title">
+        Found {results.length} {currentDietaryName} Restaurants
+      </h2>
+
       <div className="restaurants-grid">
-        {results.map(restaurant => (
-          <div 
-            key={restaurant.id} 
-            className={`restaurant-card ${selectedRestaurant === restaurant.id ? 'selected' : ''}`}
+        {results.map((restaurant) => (
+          <div
+            key={restaurant.id}
+            className={`restaurant-card ${
+              selectedRestaurant === restaurant.id ? "selected" : ""
+            }`}
           >
             <div className="restaurant-image">
-              <img 
-                src={restaurant.image_url || '/placeholder-restaurant.jpg'} 
-                alt={restaurant.name} 
+              <img
+                src={restaurant.image_url || "/placeholder-restaurant.jpg"}
+                alt={restaurant.name}
                 onError={(e) => {
-                  e.target.src = '/placeholder-restaurant.jpg';
+                  e.target.src = "/placeholder-restaurant.jpg";
                 }}
               />
               {user && (
-                <button 
+                <button
                   className="favorite-button"
-                  onClick={() => handleFavoriteClick(restaurant)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleFavoriteClick(restaurant);
+                  }}
                   disabled={favoriteLoading[restaurant.id]}
-                  aria-label={isFavorite(restaurant.id) ? 'Remove from favorites' : 'Add to favorites'}
+                  aria-label={
+                    isFavorite(restaurant.id)
+                      ? "Remove from favorites"
+                      : "Add to favorites"
+                  }
                 >
                   {favoriteLoading[restaurant.id] ? (
-                    '...'
+                    "..."
                   ) : isFavorite(restaurant.id) ? (
                     <FaHeart className="heart-icon filled" />
                   ) : (
@@ -163,82 +110,71 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
             <div className="restaurant-info">
               <h3>{restaurant.name}</h3>
               <p className="restaurant-address">
-                {restaurant.location?.address1 || 'Address not specified'}, {restaurant.location?.city}
+                {restaurant.location?.address1 || "Address not specified"},{" "}
+                {restaurant.location?.city}
               </p>
               <div className="restaurant-meta">
                 <span className="rating">{restaurant.rating} ★</span>
-                <span className="review-count">({restaurant.review_count} reviews)</span>
-                <span className="price">{restaurant.price || 'Price not available'}</span>
+                <span className="review-count">
+                  ({restaurant.review_count} reviews)
+                </span>
+                <span className="price">
+                  {restaurant.price || "Price not available"}
+                </span>
               </div>
               <div className="action-buttons">
-                <button 
-                  onClick={() => fetchReviews(restaurant.id)}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleShowReviews(restaurant);
+                  }}
                   className="reviews-button"
                   disabled={isLoadingReviews}
                 >
-                  {isLoadingReviews && selectedRestaurant === restaurant.id ? 
-                    'Loading...' : `Show ${currentDietaryName} Reviews`}
+                  {isLoadingReviews ? "Loading..." : "Show Reviews"}
                 </button>
-                <button 
-                  onClick={() => handleAddComment(restaurant)}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAddComment(restaurant);
+                  }}
                   className="comment-button"
                 >
                   <FaComment /> Comment
                 </button>
               </div>
             </div>
+
+            {/* Show reviews directly under the restaurant card when selected */}
+            {selectedRestaurant === restaurant.id && (
+              <div className="restaurant-reviews-container">
+                {reviewsError && (
+                  <div className="reviews-error">
+                    <p>{reviewsError}</p>
+                  </div>
+                )}
+
+                {isLoadingReviews ? (
+                  <div className="loading-reviews">
+                    <p>Loading reviews...</p>
+                  </div>
+                ) : (
+                  <RestaurantReviews
+                    reviews={reviews}
+                    restaurant={restaurant}
+                  />
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>
 
-      <div className="reviews-section">
-        {reviewsError && (
-          <div className="reviews-error">
-            <p>{reviewsError}</p>
-          </div>
-        )}
-
-        {selectedRestaurant && (
-          <>
-            <h3 className="reviews-title">
-              {reviews.length > 0 ? currentDietaryName : 'All'} Reviews for {
-                results.find(r => r.id === selectedRestaurant)?.name || 'Selected Restaurant'
-              }
-            </h3>
-            
-            {reviews.length > 0 ? (
-              reviews.map((review, index) => (
-                <div key={`${review.id || index}`} className="review-card">
-                  <div className="review-header">
-                    <div>
-                      <strong>{review.user?.name || 'Anonymous'}</strong>
-                      <span className="review-rating">{review.rating} ★</span>
-                    </div>
-                    <span className="review-date">
-                      {review.time_created ? new Date(review.time_created).toLocaleDateString() : 'Date not available'}
-                    </span>
-                  </div>
-                  <p className="review-text">{review.text}</p>
-                </div>
-              ))
-            ) : (
-              !isLoadingReviews && <p className="no-reviews">No reviews to display</p>
-            )}
-          </>
-        )}
-
-        {!selectedRestaurant && (
-          <div className="select-restaurant-prompt">
-            <p>Select a restaurant to view reviews</p>
-          </div>
-        )}
-      </div>
-      
-      {showCommentModal && (
-        <CommentModal
-          restaurant={selectedRestaurantForComment}
-          onClose={() => setShowCommentModal(false)}
-          onSubmit={handleSubmitComment}
+      {showReviewsModal && selectedRestaurant && (
+        <RestaurantReviews
+          reviews={reviews}
+          restaurant={selectedRestaurant}
+          onClose={handleCloseReviews}
         />
       )}
     </div>
