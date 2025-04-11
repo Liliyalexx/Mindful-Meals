@@ -8,7 +8,7 @@ export const signUp = async (userData) => {
   try {
     // Transform data to match backend expectations
     const payload = {
-      username: userData.email, // Using email as username
+      username: userData.username, // Using email as username
       password: userData.password
     };
 
