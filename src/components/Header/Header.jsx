@@ -4,6 +4,7 @@ import './Header.css';
 import SubHeading from '../../components/SubHeading/SubHeading';
 import L from 'leaflet';
 
+
 const Header = ({ handleSearch, restaurants }) => {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null); // to store Leaflet map instance
@@ -80,7 +81,7 @@ const Header = ({ handleSearch, restaurants }) => {
   const handleLocationSubmit = async () => {
     // Use Yelp API or any geocoding service (e.g., Google Geocoding) to get coordinates from location
     // Here, we're assuming the location is passed as a string (e.g., "San Francisco").
-    const geoCodeUrl = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(location)}&key=YOUR_API_KEY`;
+    const geoCodeUrl = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(location)}&key=YELP_API_KEY`;
     const response = await fetch(geoCodeUrl);
     const data = await response.json();
     const geoCoordinates = data.results[0]?.geometry;

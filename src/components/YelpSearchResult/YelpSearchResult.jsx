@@ -41,7 +41,9 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
     setSelectedRestaurant(restaurant);
 
     try {
+      console.log(`Fetching reviews for: ${restaurant.id}`);
       const response = await fetchReviews(restaurant.id);
+      console.log('Reviews response:', response);
       if (!response || !Array.isArray(response)) {
         setReviewsError("This restaurant has no reviews yet.");
         setReviews([]);
@@ -49,6 +51,7 @@ const YelpSearchResult = ({ results, dietaryPreference }) => {
         setReviews(response);
       }
     } catch (error) {
+      console.error('Review fetch error:', error);
       setReviewsError(`Failed to load reviews: ${error.message}`);
       setReviews([]);
     } finally {
